@@ -1,0 +1,8 @@
+{
+  "experimentalTernaries": true,
+  "semi": false,
+  "importOrder": ["^@/(.*)$", "^@/assets/(.*)$", "^[./]"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "plugins": ["@trivago/prettier-plugin-sort-imports"]
+}
