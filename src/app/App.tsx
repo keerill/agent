@@ -9,7 +9,7 @@ import { ThemeProvider } from "./theme"
 
 initSentry()
 
-export function App() {
+export const App = () => {
   return (
     <ThemeProvider>
       <ErrorBoundary>

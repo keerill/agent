@@ -1,2 +1,1 @@
-export { user } from "./model"
 export { initUser } from "./api"

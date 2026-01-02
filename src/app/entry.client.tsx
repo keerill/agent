@@ -1,4 +1,3 @@
-import { StrictMode } from "react"
 import { hydrateRoot } from "react-dom/client"
 import { type RouterState, createBrowserRouter } from "react-router"
 import { RouterProvider } from "react-router/dom"
@@ -11,9 +10,7 @@ const router = createBrowserRouter(routes, {
 
 hydrateRoot(
   document.getElementById("root")!,
-  <StrictMode>
-    <RouterProvider router={router} />
-  </StrictMode>,
+  <RouterProvider router={router} />,
 )
 
 declare global {

@@ -7,7 +7,7 @@ import {
   useNavigationType,
 } from "react-router"
 
-export function initSentry() {
+export const initSentry = () => {
   if (import.meta.env.VITE_IS_STAGE === "true" || !import.meta.env.PROD) return
 
   Sentry.init({

@@ -1,9 +1,8 @@
-export async function initFeatureFlags() {
+export const initFeatureFlags = async () => {
   const flags = await fetchFeatureFlags()
   const script = `
     <script type="text/javascript">
-      const flags = ${JSON.stringify(flags)}
-      window.featureFlags = flags
+      window.featureFlags = ${JSON.stringify(flags)}
     </script>
     `
 
@@ -17,7 +16,7 @@ type FlagsDto = {
   isEnabled: boolean
 }[]
 
-async function fetchFeatureFlags() {
+const fetchFeatureFlags = async () => {
   try {
     const response: FlagsDto = await fetch(
       `${import.meta.env.VITE_API_URL}/feature`,

@@ -3,11 +3,11 @@ import { type ComponentType, Suspense, lazy } from "react"
 import type { FlagName } from "./types"
 import { useFeatureFlag } from "./useFeatureFlag"
 
-export function withFeatureFlag(
+export const withFeatureFlag = (
   Component: ComponentType,
   flagName: FlagName,
   FallbackComponent?: ComponentType,
-): ComponentType {
+): ComponentType => {
   return () => {
     const isEnabled = useFeatureFlag(flagName)
 
@@ -19,11 +19,11 @@ export function withFeatureFlag(
   }
 }
 
-export function withFeatureFlagLazy(
+export const withFeatureFlagLazy = (
   importFunc: () => Promise<{ default: ComponentType }>,
   flagName: FlagName,
   FallbackComponent?: ComponentType,
-): ComponentType {
+): ComponentType => {
   const LazyComponent = lazy(importFunc)
 
   const Wrapped = () => (

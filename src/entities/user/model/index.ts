@@ -12,3 +12,4 @@ export {
   MERCHANT_MANAGER_ROLES,
   USER_ROLE_GROUPS,
 } from "./constants"
+export { user } from "./store"

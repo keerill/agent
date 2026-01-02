@@ -14,7 +14,7 @@ import { routes } from "./routes"
 
 const { query, dataRoutes, queryRoute } = createStaticHandler(routes)
 
-export async function handler(expressRequest: ExpressRequest) {
+export const handler = (expressRequest: ExpressRequest) => {
   const request = expressToFetchRequest(expressRequest)
 
   if (request.headers?.get?.("Accept")?.includes("application/json")) {
@@ -24,7 +24,7 @@ export async function handler(expressRequest: ExpressRequest) {
   }
 }
 
-function expressToFetchRequest(req: ExpressRequest): Request {
+const expressToFetchRequest = (req: ExpressRequest) => {
   const origin = `${req.protocol}://${req.get("host")}`
   const url = new URL(req.originalUrl || req.url, origin)
 
@@ -39,7 +39,7 @@ function expressToFetchRequest(req: ExpressRequest): Request {
   })
 }
 
-async function handleDocumentRequest(request: Request) {
+const handleDocumentRequest = async (request: Request) => {
   const context = await query(request)
 
   if (context instanceof Response) {
@@ -75,7 +75,7 @@ async function handleDocumentRequest(request: Request) {
   }
 }
 
-async function handleDataRequest(request: Request) {
+const handleDataRequest = async (request: Request) => {
   const newRequest =
     request.method === "POST" ?
       new Request(request.url, {
@@ -94,7 +94,7 @@ async function handleDataRequest(request: Request) {
   })
 }
 
-export function applyHeaders(res: ExpressResponse, headers: Headers) {
+export const applyHeaders = (res: ExpressResponse, headers: Headers) => {
   headers.forEach((value, key) => {
     if (!/[^\t\x20-\x7e\x80-\xff]/.test(value)) {
       res.setHeader(key, value)

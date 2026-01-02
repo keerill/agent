@@ -114,7 +114,7 @@ export const request = async (
 
 let refreshPromise: Promise<string> | null = null
 
-async function refreshToken(baseUrl: string): Promise<string> {
+const refreshToken = async (baseUrl: string): Promise<string> => {
   if (!refreshPromise) {
     refreshPromise = (async () => {
       try {
@@ -139,7 +139,7 @@ async function refreshToken(baseUrl: string): Promise<string> {
   return refreshPromise
 }
 
-function throwErr({ message, statusCode }: ApiError) {
+const throwErr = ({ message, statusCode }: ApiError) => {
   const err = new Error(message || "An unexpected error occurred", {
     cause: { statusCode },
   })
@@ -147,7 +147,7 @@ function throwErr({ message, statusCode }: ApiError) {
   throw err
 }
 
-async function getErrorData(response: Response): Promise<ApiError> {
+const getErrorData = async (response: Response): Promise<ApiError> => {
   try {
     return await response.json()
   } catch {

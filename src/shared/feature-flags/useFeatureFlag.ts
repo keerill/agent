@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { featureFlags } from "./service"
 import type { FlagName } from "./types"
 
-export function useFeatureFlag(flag: FlagName) {
+export const useFeatureFlag = (flag: FlagName) => {
   const [enabled, setEnabled] = useState(featureFlags.isEnabled(flag))
 
   useEffect(() => {
