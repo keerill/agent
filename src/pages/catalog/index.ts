@@ -1,1 +1,3 @@
-export { Catalog as deault } from "./ui"
+import { Catalog } from "./ui"
+
+export default Catalog

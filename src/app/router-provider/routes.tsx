@@ -1,13 +1,19 @@
-import { type RouteObject } from "react-router"
+import { Suspense } from "react"
+import { Outlet, type RouteObject } from "react-router"
 
-import { ROUTES, getLazyComponent } from "@/shared/routing"
+import { ROUTES } from "@/shared/routing"
 
 export const routes: RouteObject[] = [
   {
     path: "/",
-    children: ROUTES.map(({ path, pageName }) => ({
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <Outlet />
+      </Suspense>
+    ),
+    children: ROUTES.map(({ path, Component }) => ({
       path,
-      lazy: getLazyComponent(pageName),
+      Component,
     })),
   },
 ]

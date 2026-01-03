@@ -6,8 +6,6 @@ import type { FlagName } from "@/shared/feature-flags"
 export interface Route extends Omit<RouteObject, "children" | "element"> {
   /** Путь маршрута */
   path: string
-  /** Имя страницы */
-  pageName: string
   /** Вложенные маршруты */
   children?: Route[]
   /** Метаданные для меню и SEO */

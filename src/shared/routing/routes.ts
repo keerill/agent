@@ -1,10 +1,14 @@
+import { lazy } from "react"
+
 import type { Route } from "./types"
+
+const Catalog = lazy(() => import("@/pages/catalog"))
 
 export const ROUTES: Route[] = [
   // Публичные маршруты (доступны всем)
   {
     path: "/catalog",
-    pageName: "catalog",
+    Component: Catalog,
     meta: {
       title: "Каталог",
       showInMenu: true,
@@ -15,17 +19,6 @@ export const ROUTES: Route[] = [
     access: "public",
   },
 
-  // {
-  //   path: "/auth/sign-in",
-  //   page: "auth/sign-in",
-  //   meta: {
-  //     title: "Вход",
-  //     showInMenu: false,
-  //     order: 0,
-  //   },
-  //   access: "guest-only",
-  //   layout: "guest",
-  // },
   // {
   //   path: "/auth/reset-password",
   //   page: "auth/reset-password",
