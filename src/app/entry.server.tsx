@@ -2,7 +2,6 @@ import type {
   Request as ExpressRequest,
   Response as ExpressResponse,
 } from "express"
-import { StrictMode } from "react"
 import { renderToString } from "react-dom/server"
 import {
   StaticRouterProvider,
@@ -10,7 +9,7 @@ import {
   createStaticRouter,
 } from "react-router"
 
-import { routes } from "./routes"
+import { routes } from "./router-provider"
 
 const { query, dataRoutes, queryRoute } = createStaticHandler(routes)
 
@@ -49,9 +48,7 @@ const handleDocumentRequest = async (request: Request) => {
   const router = createStaticRouter(dataRoutes, context)
 
   const html = renderToString(
-    <StrictMode>
-      <StaticRouterProvider router={router} context={context} />
-    </StrictMode>,
+    <StaticRouterProvider router={router} context={context} />,
   )
 
   const deepestMatch = context.matches[context.matches.length - 1]

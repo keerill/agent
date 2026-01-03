@@ -11,7 +11,7 @@ export type FlagName =
   | "mortgagePrepayments"
   | "heldBySalesManager"
 
-export type FeatureFlag = {
+export interface FeatureFlag {
   description: string
   jiraLink: string
   isOn: boolean

@@ -2,7 +2,7 @@ import { hydrateRoot } from "react-dom/client"
 import { type RouterState, createBrowserRouter } from "react-router"
 import { RouterProvider } from "react-router/dom"
 
-import { routes } from "./routes"
+import { routes } from "./router-provider"
 
 const router = createBrowserRouter(routes, {
   hydrationData: window.__staticRouterHydrationData,

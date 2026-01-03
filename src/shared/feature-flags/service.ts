@@ -1,3 +1,5 @@
+import { isBrowser } from "@reatom/core"
+
 import { PERSIST_KEY } from "./constants"
 import type { FeatureFlagsMap, FlagName } from "./types"
 
@@ -6,8 +8,10 @@ class FeatureFlagService {
   private initialFlags: FeatureFlagsMap
 
   constructor() {
-    const localOverrides = JSON.parse(localStorage.getItem(PERSIST_KEY) || "{}")
-    const ssrFlags = window.featureFlags || {}
+    const localOverrides = JSON.parse(
+      (isBrowser() && localStorage.getItem(PERSIST_KEY)) || "{}",
+    )
+    const ssrFlags = (isBrowser() && window.featureFlags) || {}
     this.flags = { ...ssrFlags, ...localOverrides }
     this.initialFlags = { ...ssrFlags, ...localOverrides }
   }
