@@ -3,6 +3,7 @@ import { lazy } from "react"
 import type { Route } from "./types"
 
 const Catalog = lazy(() => import("@/pages/catalog"))
+const SignIn = lazy(() => import("@/pages/auth/sign-in"))
 
 export const ROUTES: Route[] = [
   // Публичные маршруты (доступны всем)
@@ -11,6 +12,18 @@ export const ROUTES: Route[] = [
     Component: Catalog,
     meta: {
       title: "Каталог",
+      showInMenu: true,
+      order: 0,
+      icon: "icon",
+      menuGroup: "main",
+    },
+    access: "public",
+  },
+  {
+    path: "/auth/sign-in",
+    Component: SignIn,
+    meta: {
+      title: "Вход",
       showInMenu: true,
       order: 0,
       icon: "icon",
