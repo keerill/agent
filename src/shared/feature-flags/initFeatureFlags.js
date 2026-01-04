@@ -9,16 +9,9 @@ export const initFeatureFlags = async () => {
   return script
 }
 
-type FlagsDto = {
-  name: string
-  description: string
-  jiraLink: string
-  isEnabled: boolean
-}[]
-
 const fetchFeatureFlags = async () => {
   try {
-    const response: FlagsDto = await fetch(
+    const response = await fetch(
       `${import.meta.env.VITE_API_URL}/feature`,
     ).then((res) => res.json())
     const flags = Object.fromEntries(

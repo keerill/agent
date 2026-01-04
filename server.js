@@ -1,7 +1,7 @@
 import express from "express"
 import fs from "node:fs/promises"
 
-import { initFeatureFlags } from "./src/shared/feature-flags"
+import { initFeatureFlags } from "./src/shared/feature-flags/initFeatureFlags.js"
 
 const isProduction = process.env.NODE_ENV === "production"
 const port = 3000
