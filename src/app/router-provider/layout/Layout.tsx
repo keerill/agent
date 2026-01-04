@@ -2,7 +2,7 @@ import { reatomComponent } from "@reatom/react"
 import type { MenuProps } from "antd"
 import { Layout as BaseLayout, type LayoutProps } from "fsk-design-system"
 import { Suspense } from "react"
-import { Outlet, useNavigate } from "react-router"
+import { Link, Outlet, useNavigate } from "react-router"
 
 import { fullName, user } from "@/entities/user"
 import { useTheme } from "@/shared/theme"
@@ -37,7 +37,13 @@ export const Layout = reatomComponent(() => {
   }
 
   const header: LayoutProps["header"] = {
-    logo: theme === "light" ? LogoLight : LogoDark,
+    logo: (
+      <Link to="/">
+        {theme === "light" ?
+          <LogoLight />
+        : <LogoDark />}
+      </Link>
+    ),
     support,
     userMenu,
     notifications,
