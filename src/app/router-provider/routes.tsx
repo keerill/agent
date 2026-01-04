@@ -1,4 +1,4 @@
-import { type RouteObject } from "react-router"
+import { Navigate, type RouteObject } from "react-router"
 
 import { ROUTES } from "@/shared/routing"
 
@@ -9,10 +9,16 @@ export const routes: RouteObject[] = [
   {
     path: "/",
     element: <Layout />,
-    children: ROUTES.default.map(({ path, Component }) => ({
-      path,
-      Component,
-    })),
+    children: [
+      {
+        index: true,
+        element: <Navigate to="/catalog" replace />,
+      },
+      ...ROUTES.default.map(({ path, Component }) => ({
+        path,
+        Component,
+      })),
+    ],
   },
 
   {

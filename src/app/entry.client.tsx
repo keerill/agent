@@ -1,17 +1,14 @@
 import { hydrateRoot } from "react-dom/client"
 import { type RouterState, createBrowserRouter } from "react-router"
-import { RouterProvider } from "react-router/dom"
 
+import { App } from "./App"
 import { routes } from "./router-provider"
 
 const router = createBrowserRouter(routes, {
   hydrationData: window.__staticRouterHydrationData,
 })
 
-hydrateRoot(
-  document.getElementById("root")!,
-  <RouterProvider router={router} />,
-)
+hydrateRoot(document.getElementById("root")!, <App router={router} />)
 
 declare global {
   interface Window {

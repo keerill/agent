@@ -1,8 +1,6 @@
 import express from "express"
 import fs from "node:fs/promises"
 
-import { initFeatureFlags } from "./src/shared/feature-flags/initFeatureFlags.js"
-
 const isProduction = process.env.NODE_ENV === "production"
 const port = 3000
 const base = "/"
@@ -81,3 +79,35 @@ app.use("*all", async (req, res, next) => {
 app.listen(port, () => {
   console.log(`Server started at http://localhost:${port}`)
 })
+
+const initFeatureFlags = async () => {
+  const flags = await fetchFeatureFlags()
+  const script = `
+    <script type="text/javascript">
+      window.featureFlags = ${JSON.stringify(flags)}
+    </script>
+    `
+
+  return script
+}
+
+const fetchFeatureFlags = async () => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/feature`,
+    ).then((res) => res.json())
+    const flags = Object.fromEntries(
+      response.map(({ name, ...flag }) => [
+        name,
+        {
+          description: flag.description,
+          jiraLink: flag.jiraLink,
+          isOn: flag.isEnabled,
+        },
+      ]),
+    )
+    return flags || {}
+  } catch {
+    return {}
+  }
+}
