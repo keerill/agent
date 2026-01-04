@@ -10,7 +10,7 @@
     "build:server": "vite build --ssr src/app/entry.server.tsx --outDir dist/server",
     "preview": "vite preview",
     "prepare": "husky",
-    "lint": "eslint .",
+    "lint": "eslint . && tsc --noEmit && stylelint \"**/*.{css,scss}\"",
     "format": "prettier --write . && stylelint **/*.css --fix"
   },
   "dependencies": {
@@ -52,6 +52,16 @@
     "vite-plugin-svgr": "4.5.0"
   },
   "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown"
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{css,scss}": [
+      "stylelint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
   }
 }
