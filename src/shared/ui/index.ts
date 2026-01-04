@@ -1,4 +1,5 @@
 export * from "./Button"
 export * from "./Divider"
 export * from "./Space"
+export * from "./Spin"
 export * from "./Switch"

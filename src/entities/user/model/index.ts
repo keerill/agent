@@ -13,3 +13,4 @@ export {
   USER_ROLE_GROUPS,
 } from "./constants"
 export { user } from "./store"
+export { fullName } from "./utils"

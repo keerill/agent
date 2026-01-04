@@ -1,8 +1,8 @@
 import { reatomComponent } from "@reatom/react"
-import { Spin } from "fsk-design-system"
 import { useEffect } from "react"
 
 import { initUser } from "@/entities/user"
+import { Spin } from "@/shared/ui"
 
 export const AuthProvider = reatomComponent(
   (props: React.PropsWithChildren) => {

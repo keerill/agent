@@ -6,12 +6,12 @@ export const ErrorBoundary = (props: ErrorBoundaryProps) => {
 }
 
 const Fallback = () => {
-  const showLink =
-    window.location.pathname !== "/" &&
-    window.location.pathname !== "/login" &&
-    window.location.pathname !== "/reset-password"
+  // const showLink =
+  //   window.location.pathname !== "/" &&
+  //   window.location.pathname !== "/login" &&
+  //   window.location.pathname !== "/reset-password"
 
-  console.log("showLink: ", showLink)
+  // console.log("showLink: ", showLink)
 
-  return <div>Fallback</div>
+  return <h1>ErrorBoundary</h1>
 }

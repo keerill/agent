@@ -5,7 +5,7 @@ import { ErrorBoundary } from "./error-boundary"
 import { initSentry } from "./initSentry"
 import { NotificationProvider } from "./notification-provider"
 import { RouterProvider } from "./router-provider"
-import { ThemeProvider } from "./theme"
+import { ThemeProvider } from "./theme-provider"
 
 initSentry()
 

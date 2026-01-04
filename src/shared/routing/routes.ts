@@ -5,32 +5,36 @@ import type { Route } from "./types"
 const Catalog = lazy(() => import("@/pages/catalog"))
 const SignIn = lazy(() => import("@/pages/auth/sign-in"))
 
-export const ROUTES: Route[] = [
-  // Публичные маршруты (доступны всем)
-  {
-    path: "/catalog",
-    Component: Catalog,
-    meta: {
-      title: "Каталог",
-      showInMenu: true,
-      order: 0,
-      icon: "icon",
-      menuGroup: "main",
+export const ROUTES: Record<string, Route[]> = {
+  default: [
+    {
+      path: "/catalog",
+      Component: Catalog,
+      meta: {
+        title: "Каталог",
+        showInMenu: true,
+        order: 0,
+        icon: "icon",
+        menuGroup: "main",
+      },
+      access: "public",
     },
-    access: "public",
-  },
-  {
-    path: "/auth/sign-in",
-    Component: SignIn,
-    meta: {
-      title: "Вход",
-      showInMenu: true,
-      order: 0,
-      icon: "icon",
-      menuGroup: "main",
+  ],
+
+  auth: [
+    {
+      path: "/auth/sign-in",
+      Component: SignIn,
+      meta: {
+        title: "Вход",
+        showInMenu: true,
+        order: 0,
+        icon: "icon",
+        menuGroup: "main",
+      },
+      access: "public",
     },
-    access: "public",
-  },
+  ],
 
   // {
   //   path: "/auth/reset-password",
@@ -133,4 +137,4 @@ export const ROUTES: Route[] = [
   //     customCheck: () => import.meta.env.VITE_IS_STAGE === "true",
   //   },
   // },
-]
+}
