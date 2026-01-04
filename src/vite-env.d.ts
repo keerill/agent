@@ -1,5 +1,5 @@
 /// <reference types="vite-plugin-svgr/client" />
-import type { FeatureFlag } from "@/shared/feature-flags"
+import type { FeatureFlagsMap } from "@/shared/feature-flags"
 
 declare global {
   interface ViteTypeOptions {
@@ -24,6 +24,6 @@ declare global {
   }
 
   interface Window {
-    featureFlags: FeatureFlag[]
+    featureFlags: FeatureFlagsMap | object
   }
 }

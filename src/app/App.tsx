@@ -1,27 +1,21 @@
-import type { ComponentProps } from "react"
-import { RouterProvider } from "react-router"
+import "fsk-design-system/styles.css"
 
 import { AuthProvider } from "./auth-provider"
 import { ErrorBoundary } from "./error-boundary"
 import { initSentry } from "./initSentry"
 import { NotificationProvider } from "./notification-provider"
+import { RouterProvider } from "./router-provider"
 import { ThemeProvider } from "./theme-provider"
 
 initSentry()
 
-interface Props {
-  router: ComponentProps<typeof RouterProvider>["router"]
-}
-
-export const App = (props: Props) => {
-  const { router } = props
-
+export const App = () => {
   return (
     <ThemeProvider>
       <ErrorBoundary>
         <NotificationProvider>
           <AuthProvider>
-            <RouterProvider router={router} />
+            <RouterProvider />
           </AuthProvider>
         </NotificationProvider>
       </ErrorBoundary>
