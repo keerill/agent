@@ -15,10 +15,9 @@ export const AuthProvider = reatomComponent(
     }, [])
 
     return (
-      <>
+      <Spin variant="circle" size="l" spinning={isIniting}>
         {children}
-        <Spin spinning={isIniting} />
-      </>
+      </Spin>
     )
   },
 )
