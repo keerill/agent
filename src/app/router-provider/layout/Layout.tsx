@@ -13,35 +13,28 @@ import LogoDark from "./logo/logo-dark.svg"
 import LogoLight from "./logo/logo-light.svg"
 import cls from "./styles.module.scss"
 
+const support: LayoutProps["header"]["support"] = {
+  phone: "8 800 30-13-494",
+  email: "partner-an@fsk.ru",
+  popupExtraContent: (
+    <>
+      <div>График работы</div>
+      <div>ПН-ПТ 9.30-20.00, СБ-ВС 10.00-18.00</div>
+    </>
+  ),
+}
+
+const notifications: LayoutProps["header"]["notifications"] = {
+  popupContent: <div>Notifications</div>,
+}
+
 export const Layout = reatomComponent(() => {
   const navigate = useNavigate()
 
   const { theme } = useTheme()
 
-  const support: LayoutProps["header"]["support"] = {
-    phone: "8 800 30-13-494",
-    email: "partner-an@fsk.ru",
-    popupExtraContent: (
-      <>
-        <div>График работы</div>
-        <div>ПН-ПТ 9.30-20.00, СБ-ВС 10.00-18.00</div>
-      </>
-    ),
-  }
-
-  const notifications: LayoutProps["header"]["notifications"] = {
-    popupContent: <div>Notifications</div>,
-  }
-
-  const userProfile = user()?.profile || {}
-  const userMenu: LayoutProps["header"]["userMenu"] = {
-    name: fullName(userProfile),
-  }
-
-  const header: LayoutProps["header"] = {
-    antProps: {
-      className: cls.header,
-    },
+  const header = {
+    antProps: { className: cls.header },
     logo: (
       <Link to="/">
         {theme === "light" ?
@@ -50,11 +43,11 @@ export const Layout = reatomComponent(() => {
       </Link>
     ),
     support,
-    userMenu,
     notifications,
-    extraContent: {
-      afterLogo: <ThemeToggler />,
+    userMenu: {
+      name: fullName(user()?.profile || {}),
     },
+    extraContent: { afterLogo: <ThemeToggler /> },
   }
 
   const menuItems: MenuProps["items"] = []
