@@ -1,0 +1,19 @@
+.header :global(.header-logo) {
+  margin-right: var(--gap-md);
+
+  svg {
+    display: block;
+  }
+}
+
+.layout :global(.ant-layout-content) {
+  position: relative;
+
+  :global(.ant-spin) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+  }
+}

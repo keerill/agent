@@ -8,8 +8,10 @@ import { fullName, user } from "@/entities/user"
 import { useTheme } from "@/shared/theme"
 import { Spin } from "@/shared/ui"
 
+import { ThemeToggler } from "./ThemeToggler"
 import LogoDark from "./logo/logo-dark.svg"
 import LogoLight from "./logo/logo-light.svg"
+import cls from "./styles.module.scss"
 
 export const Layout = reatomComponent(() => {
   const navigate = useNavigate()
@@ -37,6 +39,9 @@ export const Layout = reatomComponent(() => {
   }
 
   const header: LayoutProps["header"] = {
+    antProps: {
+      className: cls.header,
+    },
     logo: (
       <Link to="/">
         {theme === "light" ?
@@ -47,6 +52,9 @@ export const Layout = reatomComponent(() => {
     support,
     userMenu,
     notifications,
+    extraContent: {
+      afterLogo: <ThemeToggler />,
+    },
   }
 
   const menuItems: MenuProps["items"] = []
@@ -59,8 +67,12 @@ export const Layout = reatomComponent(() => {
   }
 
   return (
-    <BaseLayout header={header} sider={sider}>
-      <Suspense fallback={<Spin spinning />}>
+    <BaseLayout
+      header={header}
+      sider={sider}
+      antProps={{ rootClassName: cls.layout }}
+    >
+      <Suspense fallback={<Spin variant="circle" size="l" spinning />}>
         <Outlet />
       </Suspense>
     </BaseLayout>
