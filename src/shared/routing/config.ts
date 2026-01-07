@@ -42,7 +42,7 @@ export const ROUTES_CONFIG: Record<string, Route[]> = {
     },
 
     {
-      path: ROUTES.auth.resetPassword(":token"),
+      path: ROUTES.auth.resetPassword,
       Component: SignIn,
       meta: {
         title: "Сброс пароля",

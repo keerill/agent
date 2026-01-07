@@ -10,4 +10,5 @@ export default {
       noEmptyLineBetween: true,
     })),
   },
+  ignoreFiles: ["dist/**/*.css"],
 }

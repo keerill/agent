@@ -4,7 +4,7 @@ export const ROUTES = {
 
   auth: {
     signIn: "/auth/sign-in",
-    resetPassword: (token: string) => `/auth/reset-password/${token}`,
+    resetPassword: "/auth/reset-password",
   },
 
   notFound: "/not-found",

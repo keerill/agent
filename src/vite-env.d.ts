@@ -1,4 +1,5 @@
 /// <reference types="vite-plugin-svgr/client" />
+import type { TelegramUser } from "@/entities/user"
 import type { FeatureFlagsMap } from "@/shared/feature-flags"
 
 declare global {
@@ -25,5 +26,8 @@ declare global {
 
   interface Window {
     featureFlags: FeatureFlagsMap | object
+    telegramAuthLogin: {
+      onAuthCallback: (user: TelegramUser) => void
+    }
   }
 }

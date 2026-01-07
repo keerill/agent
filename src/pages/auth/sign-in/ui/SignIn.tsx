@@ -1,5 +1,7 @@
 import React from "react"
+import { Link } from "react-router"
 
+import { ROUTES } from "@/shared/routing"
 import { Flex, Form } from "@/shared/ui"
 import { Button, FormInput, FormPhoneInput, Tabs } from "@/shared/ui"
 import {
@@ -9,7 +11,8 @@ import {
 } from "@/shared/validators"
 
 import { type SignInTab, TABS, useSignIn } from "../model"
-import cls from "./styles.module.css"
+import { Telegram } from "./Telegram"
+import cls from "./styles.module.scss"
 
 export const SignIn = () => {
   const { form, tab, setTab } = useSignIn()
@@ -60,6 +63,7 @@ export const SignIn = () => {
           />
         }
 
+        {/* TODO: Заменить надо Input.Password */}
         <FormInput
           formItem={{
             name: "password",
@@ -67,7 +71,8 @@ export const SignIn = () => {
             rules: [requiredValidator()],
           }}
           input={{
-            label: "Пароль",
+            className: "password-input",
+            label: <PasswordLabel />,
             type: "password",
             placeholder: "123456",
             size: "l",
@@ -75,11 +80,20 @@ export const SignIn = () => {
         />
 
         <Form.Item>
-          <Button htmlType="submit" size="l">
-            Войти
-          </Button>
+          <Button htmlType="submit">Войти</Button>
         </Form.Item>
+
+        <Telegram onAuth={(v) => console.log("v: ", v)} />
       </Form>
     </Flex>
+  )
+}
+
+const PasswordLabel = () => {
+  return (
+    <span className="password-label">
+      <span>Пароль</span>
+      <Link to={ROUTES.auth.resetPassword}>Не помню пароль</Link>
+    </span>
   )
 }

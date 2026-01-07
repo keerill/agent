@@ -9,7 +9,7 @@ import { Spin } from "@/shared/ui"
 
 import { ThemeToggler } from "../common/ThemeToggler"
 import { Logo } from "../common/logo"
-import cls from "../common/styles.module.css"
+import cls from "../common/styles.module.scss"
 
 interface Props {
   hideSider?: boolean
