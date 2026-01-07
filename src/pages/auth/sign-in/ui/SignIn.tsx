@@ -1,18 +1,16 @@
 import { Flex, Form } from "antd"
+import React from "react"
 
-import { Button, FormInput, Tabs } from "@/shared/ui"
+import { Button, FormInput, FormPhoneInput, Tabs } from "@/shared/ui"
+import { phoneValidator } from "@/shared/validators"
 
-import {
-  type SignInTab,
-  TABS,
-  emailValidator,
-  phoneValidator,
-  useSignIn,
-} from "../model"
+import { type SignInTab, TABS, useSignIn } from "../model"
 import cls from "./styles.module.scss"
 
 export const SignIn = () => {
   const { form, tab, setTab, error } = useSignIn()
+
+  const beforeAutofillValueRef = React.useRef("")
 
   return (
     <Flex className={cls.wrap} align="center" justify="center" vertical>
@@ -31,7 +29,7 @@ export const SignIn = () => {
           <FormInput
             formItem={{
               name: "email",
-              rules: [emailValidator()],
+              rules: [{ type: "email", message: "Неверный e-mail" }],
             }}
             input={{
               label: "E-mail",
@@ -39,10 +37,11 @@ export const SignIn = () => {
               size: "l",
             }}
           />
-        : <FormInput
+        : <FormPhoneInput
             formItem={{
               name: "phone",
-              rules: [phoneValidator()],
+              // eslint-disable-next-line react-hooks/refs
+              rules: [phoneValidator(false, false, beforeAutofillValueRef)],
             }}
             input={{
               label: "Телефон",
