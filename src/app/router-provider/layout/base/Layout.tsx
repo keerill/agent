@@ -5,6 +5,7 @@ import { Suspense } from "react"
 import { Link, Outlet, useNavigate } from "react-router"
 
 import { fullName, user } from "@/entities/user"
+import { ROUTES } from "@/shared/routing"
 import { Spin } from "@/shared/ui"
 
 import { ThemeToggler } from "../common/ThemeToggler"
@@ -23,7 +24,7 @@ export const BaseLayout = reatomComponent((props: Props) => {
   const header = {
     antProps: { className: cls.header },
     logo: (
-      <Link to="/">
+      <Link to={ROUTES.catalog}>
         <Logo />
       </Link>
     ),
@@ -43,7 +44,7 @@ export const BaseLayout = reatomComponent((props: Props) => {
         menu: {
           items: menuItems,
         },
-        backBtn: { onBack: () => navigate("/") },
+        backBtn: { onBack: () => navigate(ROUTES.catalog) },
       }
     )
 

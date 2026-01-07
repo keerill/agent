@@ -6,4 +6,6 @@ export const ROUTES = {
     signIn: "/auth/sign-in",
     resetPassword: (token: string) => `/auth/reset-password/${token}`,
   },
+
+  notFound: "/not-found",
 } as const

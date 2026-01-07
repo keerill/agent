@@ -3,41 +3,57 @@ import { Navigate, type RouteObject } from "react-router"
 import { ROUTES, ROUTES_CONFIG } from "@/shared/routing"
 
 import { NotFound } from "./NotFound"
+import { RequireAuth, RequireNoAuth } from "./guards"
 import { AuthLayout, BaseLayout } from "./layout"
 
 export const routes: RouteObject[] = [
   {
-    path: "/",
-    element: <BaseLayout />,
+    element: <RequireAuth />,
     children: [
       {
-        index: true,
-        element: <Navigate to={ROUTES.catalog} replace />,
+        path: "/",
+        element: <BaseLayout />,
+        children: [
+          {
+            index: true,
+            element: <Navigate to={ROUTES.catalog} replace />,
+          },
+          ...ROUTES_CONFIG.default.map(({ path, Component }) => ({
+            path,
+            Component,
+          })),
+        ],
       },
-      ...ROUTES_CONFIG.default.map(({ path, Component }) => ({
-        path,
-        Component,
-      })),
     ],
   },
 
   {
-    path: "/auth",
-    element: <AuthLayout />,
+    element: <RequireNoAuth />,
     children: [
       {
-        index: true,
-        element: <Navigate to={ROUTES.auth.signIn} replace />,
+        path: "/auth",
+        element: <AuthLayout />,
+        children: [
+          {
+            index: true,
+            element: <Navigate to={ROUTES.auth.signIn} replace />,
+          },
+          ...ROUTES_CONFIG.auth.map(({ path, Component }) => ({
+            path,
+            Component,
+          })),
+        ],
       },
-      ...ROUTES_CONFIG.auth.map(({ path, Component }) => ({
-        path,
-        Component,
-      })),
     ],
+  },
+
+  {
+    path: ROUTES.notFound,
+    element: <NotFound />,
   },
 
   {
     path: "*",
-    element: <NotFound />,
+    element: <Navigate to={ROUTES.notFound} replace />,
   },
 ]
