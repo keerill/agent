@@ -3,12 +3,12 @@ import { Navigate, type RouteObject } from "react-router"
 import { ROUTES, ROUTES_CONFIG } from "@/shared/routing"
 
 import { NotFound } from "./NotFound"
-import { Layout } from "./layout"
+import { AuthLayout, BaseLayout } from "./layout"
 
 export const routes: RouteObject[] = [
   {
     path: "/",
-    element: <Layout />,
+    element: <BaseLayout />,
     children: [
       {
         index: true,
@@ -23,7 +23,7 @@ export const routes: RouteObject[] = [
 
   {
     path: "/auth",
-    element: <Layout hideSider />,
+    element: <AuthLayout />,
     children: [
       {
         index: true,

@@ -1,1 +1,2 @@
-export { Layout } from "./Layout"
+export { BaseLayout } from "./base"
+export { AuthLayout } from "./auth"

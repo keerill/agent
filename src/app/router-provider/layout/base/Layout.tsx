@@ -1,36 +1,30 @@
 import { reatomComponent } from "@reatom/react"
 import type { MenuProps } from "antd"
-import { Layout as BaseLayout, type LayoutProps } from "fsk-design-system"
+import { Layout, type LayoutProps } from "fsk-design-system"
 import { Suspense } from "react"
 import { Link, Outlet, useNavigate } from "react-router"
 
 import { fullName, user } from "@/entities/user"
-import { useTheme } from "@/shared/theme"
 import { Spin } from "@/shared/ui"
 
-import { ThemeToggler } from "./ThemeToggler"
-import LogoDark from "./logo/logo-dark.svg"
-import LogoLight from "./logo/logo-light.svg"
-import cls from "./styles.module.scss"
+import { ThemeToggler } from "../common/ThemeToggler"
+import { Logo } from "../common/logo"
+import cls from "../common/styles.module.scss"
 
 interface Props {
   hideSider?: boolean
 }
 
-export const Layout = reatomComponent((props: Props) => {
+export const BaseLayout = reatomComponent((props: Props) => {
   const { hideSider } = props
 
   const navigate = useNavigate()
-
-  const { theme } = useTheme()
 
   const header = {
     antProps: { className: cls.header },
     logo: (
       <Link to="/">
-        {theme === "light" ?
-          <LogoLight />
-        : <LogoDark />}
+        <Logo />
       </Link>
     ),
     support,
@@ -54,7 +48,7 @@ export const Layout = reatomComponent((props: Props) => {
     )
 
   return (
-    <BaseLayout
+    <Layout
       header={header}
       sider={sider}
       antProps={{ rootClassName: cls.layout }}
@@ -62,7 +56,7 @@ export const Layout = reatomComponent((props: Props) => {
       <Suspense fallback={<Spin variant="circle" size="l" spinning />}>
         <Outlet />
       </Suspense>
-    </BaseLayout>
+    </Layout>
   )
 })
 
