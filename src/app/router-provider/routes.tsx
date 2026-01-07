@@ -1,6 +1,6 @@
 import { Navigate, type RouteObject } from "react-router"
 
-import { ROUTES } from "@/shared/routing"
+import { ROUTES, ROUTES_CONFIG } from "@/shared/routing"
 
 import { NotFound } from "./NotFound"
 import { Layout } from "./layout"
@@ -12,9 +12,9 @@ export const routes: RouteObject[] = [
     children: [
       {
         index: true,
-        element: <Navigate to="/catalog" replace />,
+        element: <Navigate to={ROUTES.catalog} replace />,
       },
-      ...ROUTES.default.map(({ path, Component }) => ({
+      ...ROUTES_CONFIG.default.map(({ path, Component }) => ({
         path,
         Component,
       })),
@@ -23,11 +23,17 @@ export const routes: RouteObject[] = [
 
   {
     path: "/auth",
-    element: <Layout />,
-    children: ROUTES.auth.map(({ path, Component }) => ({
-      path,
-      Component,
-    })),
+    element: <Layout hideSider />,
+    children: [
+      {
+        index: true,
+        element: <Navigate to={ROUTES.auth.signIn} replace />,
+      },
+      ...ROUTES_CONFIG.auth.map(({ path, Component }) => ({
+        path,
+        Component,
+      })),
+    ],
   },
 
   {

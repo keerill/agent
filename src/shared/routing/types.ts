@@ -9,9 +9,7 @@ export interface Route extends Omit<RouteObject, "children" | "element"> {
   /** Вложенные маршруты */
   children?: Route[]
   /** Метаданные для меню и SEO */
-  meta: RouteMeta
-  /** Настройки доступа */
-  access: RouteAccess
+  meta?: RouteMeta
   /** Защитники доступа */
   guard?: RouteGuard
   /** Layout для страницы */
@@ -20,38 +18,17 @@ export interface Route extends Omit<RouteObject, "children" | "element"> {
   menuPath?: (user: User | null) => string
 }
 
-// export interface FlatRoute extends RouteConfig {
-//   fullPath: string
-//   parent?: FlatRoute
-//   depth: number
-// }
-
-// export interface MenuItem {
-//   key: string
-//   title: string
-//   path: string
-//   icon?: React.ReactNode
-//   order: number
-//   children?: MenuItem[]
-//   menuGroup?: string
-//   sublinks?: string[]
-//   trackKey?: string
-//   onClick?: () => void
-// }
-
-type RouteAccess = "public" | "auth-only" | "guest-only"
-
 interface RouteMeta {
   /** Отображаемое название в меню */
-  title: string
+  title?: string
   /** Описание для SEO */
   description?: string
   /** Иконка для меню (React компонент) */
   icon?: React.ReactNode
   /** Показывать ли в меню */
-  showInMenu: boolean
+  showInMenu?: boolean
   /** Порядок сортировки в меню */
-  order: number
+  order?: number
   /** Ключ для трекинга */
   trackKey?: string
   /** Группа меню */
