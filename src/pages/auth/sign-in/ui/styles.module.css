@@ -1,0 +1,22 @@
+.wrap {
+  height: 100%;
+
+  :global(.title) {
+    margin-bottom: var(--gap-xl);
+
+    font: var(--font-heading-m);
+  }
+
+  :global(.ant-tabs) {
+    margin-bottom: var(--gap-xl);
+  }
+
+  :global(.ant-form) {
+    width: 100%;
+    max-width: 364px;
+  }
+
+  :global(.ant-btn) {
+    width: 100%;
+  }
+}

@@ -7,7 +7,7 @@ import { Spin } from "@/shared/ui"
 
 import { ThemeToggler } from "../common/ThemeToggler"
 import { Logo } from "../common/logo"
-import cls from "../common/styles.module.scss"
+import cls from "../common/styles.module.css"
 
 export const AuthLayout = reatomComponent(() => {
   const header = {

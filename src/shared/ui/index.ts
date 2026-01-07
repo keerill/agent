@@ -1,5 +1,6 @@
 export * from "./Button"
 export * from "./Divider"
+export * from "./Flex"
 export * from "./Form"
 export * from "./Input"
 export * from "./PhoneInput"

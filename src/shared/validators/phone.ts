@@ -1,5 +1,6 @@
 import type { MaskitoMask, MaskitoMaskExpression } from "@maskito/core"
 
+import type { Rule } from "@/shared/ui"
 import { createMaskOptions, findCountry, initCountries } from "@/shared/utils"
 
 const countriesData = initCountries()
@@ -8,7 +9,7 @@ export const phoneValidator = (
   clearableCountryCode: boolean,
   preserveCountryCode: boolean,
   beforeAutofillValueRef: React.MutableRefObject<string>,
-) => ({
+): Rule => ({
   validator(_: unknown, value: string) {
     const country = findCountry(countriesData, value, undefined)
 
@@ -22,7 +23,7 @@ export const phoneValidator = (
     const maxLength = maskLength(maskOptions.mask, { value, selection: [0, 0] })
 
     if (value.length < maxLength) {
-      return Promise.reject("Некорректный номер телефона")
+      return Promise.reject("Неверный номер телефона")
     }
 
     return Promise.resolve()

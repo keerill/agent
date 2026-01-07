@@ -1,5 +1,4 @@
 import { reatomComponent } from "@reatom/react"
-import type { MenuProps } from "antd"
 import { Layout, type LayoutProps } from "fsk-design-system"
 import { Suspense } from "react"
 import { Link, Outlet, useNavigate } from "react-router"
@@ -10,7 +9,7 @@ import { Spin } from "@/shared/ui"
 
 import { ThemeToggler } from "../common/ThemeToggler"
 import { Logo } from "../common/logo"
-import cls from "../common/styles.module.scss"
+import cls from "../common/styles.module.css"
 
 interface Props {
   hideSider?: boolean
@@ -36,7 +35,7 @@ export const BaseLayout = reatomComponent((props: Props) => {
     extraContent: { afterLogo: <ThemeToggler /> },
   }
 
-  const menuItems: MenuProps["items"] = []
+  const menuItems: NonNullable<LayoutProps["sider"]>["menu"]["items"] = []
 
   const sider: LayoutProps["sider"] =
     hideSider ? undefined : (
