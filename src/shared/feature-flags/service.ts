@@ -42,7 +42,7 @@ const initFeatureFlags = async () => {
   window.featureFlags = flags
 }
 
-type FlagsDto = {
+type FlagsResponse = {
   name: string
   description: string
   jiraLink: string
@@ -51,7 +51,7 @@ type FlagsDto = {
 
 const fetchFeatureFlags = async (): Promise<FeatureFlagsMap | object> => {
   try {
-    const response: FlagsDto = await fetch(
+    const response: FlagsResponse = await fetch(
       `${import.meta.env.VITE_API_URL}/feature`,
     ).then((res) => res.json())
 

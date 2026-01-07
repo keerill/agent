@@ -1,0 +1,25 @@
+html[data-theme="light"] {
+  --gradient-orange: radial-gradient(
+    100% 1081.68% at 0% 18.89%,
+    #e84e0e 0%,
+    #ff8a1e 80.92%
+  );
+  --gradient-gray: radial-gradient(
+    100% 1081.68% at 0% 18.89%,
+    #7b7b7b 0%,
+    #a1a1a1 80.92%
+  );
+}
+
+html[data-theme="dark"] {
+  --gradient-orange: radial-gradient(
+    349.52% 1112.54% at -5.84% 106.58%,
+    #ac400f 0%,
+    #dd7921 100%
+  );
+  --gradient-gray: radial-gradient(
+    100% 1081.68% at 0% 18.89%,
+    #7b7b7b 0%,
+    #a1a1a1 80.92%
+  );
+}
