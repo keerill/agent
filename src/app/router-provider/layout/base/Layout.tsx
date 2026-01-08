@@ -3,7 +3,7 @@ import { Layout, type LayoutProps } from "fsk-design-system"
 import { Suspense } from "react"
 import { Link, Outlet, useNavigate } from "react-router"
 
-import { fullName, user } from "@/entities/user"
+import { fullName, signOut, user } from "@/entities/user"
 import { ROUTES } from "@/shared/routing"
 import { Spin } from "@/shared/ui"
 
@@ -31,6 +31,7 @@ export const BaseLayout = reatomComponent((props: Props) => {
     notifications,
     userMenu: {
       name: fullName(user()?.profile || {}),
+      onLogout: signOut,
     },
     extraContent: { afterLogo: <ThemeToggler /> },
   }

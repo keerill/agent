@@ -1,14 +1,21 @@
 import { reatomComponent } from "@reatom/react"
 import { useEffect } from "react"
 
-import { initUser, user } from "@/entities/user"
+import { initUser, signOut, user } from "@/entities/user"
+import { ROUTES } from "@/shared/routing"
 import { Spin } from "@/shared/ui"
 
 export const AuthProvider = reatomComponent(
   (props: React.PropsWithChildren) => {
     const { children } = props
 
-    const isIniting = initUser.status().isPending
+    const authRoutes: string[] = Object.values(ROUTES.auth)
+
+    const isSignOutting = signOut.status().isPending
+
+    const isIniting =
+      initUser.status().isPending &&
+      !authRoutes.includes(window.location.pathname)
 
     useEffect(() => {
       if (!user()) return
@@ -17,7 +24,7 @@ export const AuthProvider = reatomComponent(
     }, [])
 
     return (
-      <Spin variant="circle" size="l" spinning={isIniting}>
+      <Spin variant="circle" size="l" spinning={isIniting || isSignOutting}>
         {children}
       </Spin>
     )
