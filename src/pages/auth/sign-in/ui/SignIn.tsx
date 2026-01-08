@@ -1,4 +1,5 @@
-import { useCallback, useRef, useState } from "react"
+import { reatomComponent } from "@reatom/react"
+import { useRef, useState } from "react"
 import { Link } from "react-router"
 
 import { type TelegramUser, signInViaTg } from "@/entities/user"
@@ -17,7 +18,13 @@ import { type SignInTab, TABS } from "../model"
 import { Telegram } from "./Telegram"
 import cls from "./styles.module.scss"
 
-export const SignIn = () => {
+const onAuthTg = (user: TelegramUser) => {
+  if (signIn.status().isPending || signInViaTg.status().isPending) return
+
+  signInViaTg(user)
+}
+
+export const SignIn = reatomComponent(() => {
   const [tab, setTab] = useState<SignInTab>("email")
 
   const beforeAutofillValueRef = useRef("")
@@ -27,14 +34,8 @@ export const SignIn = () => {
     onError: true,
   })
 
-  const onAuthTg = useCallback(
-    () => (user: TelegramUser) => {
-      if (signInViaTg.pending()) return
-
-      signInViaTg(user)
-    },
-    [],
-  )
+  const isSignInning =
+    signIn.status().isPending || signInViaTg.status().isPending
 
   return (
     <Flex className={cls.wrap} align="center" justify="center" vertical>
@@ -65,7 +66,7 @@ export const SignIn = () => {
             formItem={{
               name: "phone",
               required: true,
-              // eslint-disable-next-line react-hooks/refs
+
               rules: [phoneValidator(false, false, beforeAutofillValueRef)],
             }}
             input={{
@@ -93,14 +94,16 @@ export const SignIn = () => {
         />
 
         <Form.Item>
-          <Button htmlType="submit">Войти</Button>
+          <Button htmlType="submit" loading={isSignInning}>
+            Войти
+          </Button>
         </Form.Item>
-
-        <Telegram onAuth={onAuthTg} />
       </Form>
+
+      <Telegram onAuth={onAuthTg} />
     </Flex>
   )
-}
+})
 
 const PasswordLabel = () => {
   return (

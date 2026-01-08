@@ -15,6 +15,8 @@
     .ant-form {
       width: 100%;
       max-width: 364px;
+
+      margin-bottom: var(--gap-xs);
     }
 
     .ant-btn {
@@ -22,7 +24,7 @@
     }
 
     .ant-form-item {
-      margin-bottom: var(--gap-xs);
+      margin-bottom: 0;
     }
 
     .password-input .form-control-label {
