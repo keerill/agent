@@ -82,7 +82,10 @@ export const request = async (
         }
       }
 
-      if (errorData.statusCode === 401) {
+      if (
+        errorData.statusCode === 401 &&
+        errorData.message === "Unauthorized"
+      ) {
         console.error(`Fetch error 401: ${errorData.message}`)
         console.log("Refreshing token")
 
