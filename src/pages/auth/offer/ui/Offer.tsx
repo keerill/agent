@@ -1,8 +1,8 @@
 import { reatomComponent } from "@reatom/react"
 import { useRef, useState } from "react"
-import { Link, useNavigate } from "react-router"
+import { Link } from "react-router"
 
-import { type TelegramUser, signInViaTg } from "@/entities/user"
+import { signInViaTg } from "@/entities/user"
 import { useNotifyAction } from "@/shared/hooks"
 import { ROUTES } from "@/shared/routing"
 import { Flex, Form } from "@/shared/ui"
@@ -14,37 +14,16 @@ import {
 } from "@/shared/validators"
 
 import { signIn } from "../api"
-import { type SignInForm, type SignInTab, TABS } from "../model"
-import { Telegram } from "./Telegram"
+import { type SignInTab, TABS } from "../model"
 import cls from "./styles.module.scss"
 
-const onAuthTg = (user: TelegramUser) => {
-  if (signIn.status().isPending || signInViaTg.status().isPending) return
-
-  signInViaTg(user)
-}
-
-export const SignIn = reatomComponent(() => {
-  const navigate = useNavigate()
-
+export const OfferAcceptance = reatomComponent(() => {
   const [tab, setTab] = useState<SignInTab>("email")
 
   const beforeAutofillValueRef = useRef("")
 
   const signInAction = useNotifyAction({
-    action: async (v: SignInForm) => {
-      try {
-        await signIn(v)
-      } catch (error) {
-        if (
-          error instanceof Error &&
-          error.message ===
-            "Необходимо подписать договор оферты для продолжения работы"
-        ) {
-          navigate(ROUTES.auth.offer)
-        }
-      }
-    },
+    action: signIn,
     onError: true,
   })
 
@@ -53,7 +32,7 @@ export const SignIn = reatomComponent(() => {
 
   return (
     <Flex className={cls.wrap} align="center" justify="center" vertical>
-      <div className="title">Авторизация</div>
+      <div className="title">Принятие оферты</div>
 
       <Tabs
         type="square-orange"
@@ -112,8 +91,6 @@ export const SignIn = reatomComponent(() => {
           </Button>
         </Form.Item>
       </Form>
-
-      <Telegram onAuth={onAuthTg} />
     </Flex>
   )
 })

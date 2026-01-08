@@ -5,6 +5,7 @@ import type { Route } from "./types"
 
 const Catalog = lazy(() => import("@/pages/catalog"))
 const SignIn = lazy(() => import("@/pages/auth/sign-in"))
+const OfferAcceptance = lazy(() => import("@/pages/auth/offer"))
 
 export const ROUTES_CONFIG: Record<string, Route[]> = {
   default: [
@@ -46,10 +47,14 @@ export const ROUTES_CONFIG: Record<string, Route[]> = {
       Component: SignIn,
       meta: {
         title: "Сброс пароля",
-        showInMenu: true,
-        order: 0,
-        icon: "icon",
-        menuGroup: "main",
+      },
+    },
+
+    {
+      path: ROUTES.auth.offer,
+      Component: OfferAcceptance,
+      meta: {
+        title: "Принятие оферты",
       },
     },
   ],
