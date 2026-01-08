@@ -66,7 +66,6 @@ export const SignIn = reatomComponent(() => {
             formItem={{
               name: "phone",
               required: true,
-
               rules: [phoneValidator(false, false, beforeAutofillValueRef)],
             }}
             input={{
