@@ -1,35 +1,22 @@
 import { reatomComponent } from "@reatom/react"
 import { useLayoutEffect } from "react"
-import { useNavigate } from "react-router"
 
-import { ROUTES } from "@/shared/routing"
 import { Flex, Form } from "@/shared/ui"
 import { Button, FormInput } from "@/shared/ui"
 import { emailValidator, requiredValidator } from "@/shared/validators"
 
 import cls from "../../common/styles.module.scss"
+import { useEmail } from "../../common/useEmail"
 import { offer } from "../api"
 
-export const OfferAcceptance = reatomComponent(() => {
-  const navigate = useNavigate()
-
+export const OfferConfirmation = reatomComponent(() => {
   const [form] = Form.useForm<{ email: string }>()
 
+  const { email } = useEmail()
+  console.log("email: ", email)
+
   useLayoutEffect(() => {
-    const params = new URLSearchParams(new URL(window.location.href).search)
-    const email = params.get("email")
-
-    if (!email) {
-      navigate(ROUTES.auth.signIn)
-      return
-    }
-
     offer()
-
-    // params.delete("email")
-    // window.history.replaceState(null, "", `?${params.toString()}`)
-
-    form.setFieldValue("email", email)
   }, [])
 
   const onClickOffer = () => window.open(offer.data(), "_blank")
@@ -40,8 +27,8 @@ export const OfferAcceptance = reatomComponent(() => {
         <div className="title">Принятие оферты</div>
 
         <div className="subtitle">
-          Чтобы войти в Личный кабинет, пожалуйста ознакомьтесь и примите
-          условия Оферты
+          Для того, чтобы принять оферту, введите код подтверждения. Код можно
+          получить в Telegram-боте
         </div>
 
         <FormInput
@@ -58,10 +45,20 @@ export const OfferAcceptance = reatomComponent(() => {
         />
 
         <Form.Item>
-          <Button htmlType="submit">Принять оферту</Button>
+          <Button htmlType="submit">Подтвердить оферту</Button>
         </Form.Item>
 
-        <Button type="extra-outline" onClick={onClickOffer}>
+        <Button
+          className="tg-bot"
+          type="extra-primary"
+          onClick={() =>
+            window.open(import.meta.env.VITE_TG_AUTH_BOT_URL, "_blank")
+          }
+        >
+          Перейти в Telegram-бота
+        </Button>
+
+        <Button type="extra-primary" onClick={onClickOffer}>
           Ознакомиться с офертой
         </Button>
       </Form>

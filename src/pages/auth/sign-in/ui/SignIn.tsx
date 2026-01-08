@@ -45,7 +45,9 @@ export const SignIn = reatomComponent(() => {
           error.message ===
             "Необходимо подписать договор оферты для продолжения работы"
         ) {
-          navigate(`${ROUTES.auth.offer}?email=${v.email}`)
+          navigate(`${ROUTES.auth.offerAcceptance}?email=${v.email}`, {
+            replace: true,
+          })
         }
       }
     },
