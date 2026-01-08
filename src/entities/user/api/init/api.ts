@@ -7,8 +7,6 @@ import type { AuthMeResponse } from "./types"
 import { getMeEndpoint } from "./utils"
 
 export const initUser = action(async () => {
-  if (!user()) return
-
   const authMeData = await wrap(api.get<AuthMeResponse>("/auth/me"))
 
   const meData = await wrap(

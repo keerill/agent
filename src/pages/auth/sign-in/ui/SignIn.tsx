@@ -1,6 +1,8 @@
-import React from "react"
+import { useCallback, useRef, useState } from "react"
 import { Link } from "react-router"
 
+import { type TelegramUser, signInViaTg } from "@/entities/user"
+import { useNotifyAction } from "@/shared/hooks"
 import { ROUTES } from "@/shared/routing"
 import { Flex, Form } from "@/shared/ui"
 import { Button, FormInput, FormPhoneInput, Tabs } from "@/shared/ui"
@@ -10,14 +12,29 @@ import {
   requiredValidator,
 } from "@/shared/validators"
 
-import { type SignInTab, TABS, useSignIn } from "../model"
+import { signIn } from "../api"
+import { type SignInTab, TABS } from "../model"
 import { Telegram } from "./Telegram"
 import cls from "./styles.module.scss"
 
 export const SignIn = () => {
-  const { form, tab, setTab } = useSignIn()
+  const [tab, setTab] = useState<SignInTab>("email")
 
-  const beforeAutofillValueRef = React.useRef("")
+  const beforeAutofillValueRef = useRef("")
+
+  const signInAction = useNotifyAction({
+    action: signIn,
+    onError: true,
+  })
+
+  const onAuthTg = useCallback(
+    () => (user: TelegramUser) => {
+      if (signInViaTg.pending()) return
+
+      signInViaTg(user)
+    },
+    [],
+  )
 
   return (
     <Flex className={cls.wrap} align="center" justify="center" vertical>
@@ -30,11 +47,7 @@ export const SignIn = () => {
         items={TABS}
       />
 
-      <Form
-        form={form}
-        layout="vertical"
-        onFinish={(v) => console.log("v: ", v)}
-      >
+      <Form onFinish={signInAction}>
         {tab === "email" ?
           <FormInput
             formItem={{
@@ -83,7 +96,7 @@ export const SignIn = () => {
           <Button htmlType="submit">Войти</Button>
         </Form.Item>
 
-        <Telegram onAuth={(v) => console.log("v: ", v)} />
+        <Telegram onAuth={onAuthTg} />
       </Form>
     </Flex>
   )

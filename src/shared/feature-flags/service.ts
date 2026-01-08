@@ -52,7 +52,7 @@ type FlagsResponse = {
 const fetchFeatureFlags = async (): Promise<FeatureFlagsMap | object> => {
   try {
     const response: FlagsResponse = await fetch(
-      `${import.meta.env.VITE_API_URL}/feature`,
+      `${import.meta.env.VITE_SERVER_URL}/api/v1/feature`,
     ).then((res) => res.json())
 
     const flags = Object.fromEntries(

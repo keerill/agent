@@ -8,7 +8,7 @@ declare global {
   }
 
   interface ImportMetaEnv {
-    readonly VITE_API_URL: string
+    readonly VITE_SERVER_URL: string
     readonly VITE_WEBSOCKET_URL: string
     readonly VITE_IS_STAGE: string
     readonly VITE_TG_AUTH_BOT_URL: string

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { memo, useEffect, useRef } from "react"
 
 import type { TelegramUser } from "@/entities/user"
 
@@ -6,7 +6,7 @@ interface Props {
   onAuth: (user: TelegramUser) => void
 }
 
-export const Telegram = (props: Props) => {
+export const Telegram = memo((props: Props) => {
   const { onAuth } = props
 
   const containerRef = useRef<HTMLDivElement>(null)
@@ -45,4 +45,4 @@ export const Telegram = (props: Props) => {
   }, [onAuth])
 
   return <div ref={containerRef} className="tg-widget" />
-}
+})

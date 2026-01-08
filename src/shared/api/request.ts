@@ -1,3 +1,5 @@
+import { user } from "@/entities/user"
+
 import type { ApiError, HttpRequestOptions } from "./types"
 
 export const request = async (
@@ -7,11 +9,12 @@ export const request = async (
   const { retry = { count: 0 }, ...optionsWithBody } = optionsParam
   const { body, ...options } = optionsWithBody
 
-  const baseUrl = `${import.meta.env.VITE_API_URL}/api`
+  const baseUrl = `${import.meta.env.VITE_SERVER_URL}/api/v1`
   const url = `${baseUrl}${endpoint}`
 
   const headers: HeadersInit = {
     ...options.headers,
+    credentials: "include",
   }
 
   if (body !== undefined && !(body instanceof FormData)) {
@@ -125,6 +128,7 @@ const refreshToken = async (baseUrl: string): Promise<string> => {
 
         if (!refreshResponse.ok) {
           const errorData: ApiError = await getErrorData(refreshResponse)
+          user.set(null)
           throwErr(errorData)
         }
 

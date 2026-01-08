@@ -1,7 +1,7 @@
 import { reatomComponent } from "@reatom/react"
 import { useEffect } from "react"
 
-import { initUser } from "@/entities/user"
+import { initUser, user } from "@/entities/user"
 import { Spin } from "@/shared/ui"
 
 export const AuthProvider = reatomComponent(
@@ -11,6 +11,8 @@ export const AuthProvider = reatomComponent(
     const isIniting = initUser.status().isPending
 
     useEffect(() => {
+      if (!user()) return
+
       initUser()
     }, [])
 

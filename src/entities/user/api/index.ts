@@ -1,2 +1,2 @@
 export { initUser } from "./init"
-export { type TelegramUser } from "./telegram"
+export { signInViaTg, type TelegramUser } from "./telegram"
