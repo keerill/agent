@@ -12,6 +12,7 @@ import {
   requiredValidator,
 } from "@/shared/validators"
 
+import cls from "../../common/styles.module.scss"
 import { signIn, signInViaTg } from "../api"
 import {
   type SignInForm,
@@ -20,7 +21,6 @@ import {
   type TelegramUser,
 } from "../model"
 import { Telegram } from "./Telegram"
-import cls from "./styles.module.scss"
 
 const onAuthTg = (user: TelegramUser) => {
   if (signIn.status().isPending || signInViaTg.status().isPending) return
@@ -45,7 +45,7 @@ export const SignIn = reatomComponent(() => {
           error.message ===
             "Необходимо подписать договор оферты для продолжения работы"
         ) {
-          navigate(ROUTES.auth.offer)
+          navigate(`${ROUTES.auth.offer}?email=${v.email}`)
         }
       }
     },
@@ -57,16 +57,16 @@ export const SignIn = reatomComponent(() => {
 
   return (
     <Flex className={cls.wrap} align="center" justify="center" vertical>
-      <div className="title">Авторизация</div>
-
-      <Tabs
-        type="square-orange"
-        activeKey={tab}
-        onChange={(key) => setTab(key as SignInTab)}
-        items={TABS}
-      />
-
       <Form onFinish={signInAction}>
+        <div className="title">Авторизация</div>
+
+        <Tabs
+          type="square-orange"
+          activeKey={tab}
+          onChange={(key) => setTab(key as SignInTab)}
+          items={TABS}
+        />
+
         {tab === "email" ?
           <FormInput
             formItem={{
@@ -115,9 +115,9 @@ export const SignIn = reatomComponent(() => {
             Войти
           </Button>
         </Form.Item>
-      </Form>
 
-      <Telegram onAuth={onAuthTg} />
+        <Telegram onAuth={onAuthTg} />
+      </Form>
     </Flex>
   )
 })

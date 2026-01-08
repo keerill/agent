@@ -1,17 +1,12 @@
-import { action, withAsync, wrap } from "@reatom/core"
+import { action, withAsyncData, wrap } from "@reatom/core"
 
-import { initUser } from "@/entities/user"
 import { api } from "@/shared/api"
 
-import type { SignInForm } from "../model"
+import type { Offer } from "../model"
 
-export const signIn = action(async (form: SignInForm) => {
-  const body = {
-    email: form.email,
-    phone: form.phone?.replace(/\D/g, ""),
-    password: form.password,
-  }
-
-  await wrap(api.post("/auth/login", { body }))
-  await wrap(initUser())
-}).extend(withAsync({ status: true }))
+export const offer = action(async () => {
+  const data = await wrap(api.get<Offer>("/offer-agreement"))
+  const urlResponse = await wrap(fetch(data.files[0].downloadUrl))
+  const blob = await wrap(urlResponse.blob())
+  return URL.createObjectURL(blob)
+}).extend(withAsyncData())

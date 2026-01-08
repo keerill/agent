@@ -1,105 +1,70 @@
 import { reatomComponent } from "@reatom/react"
-import { useRef, useState } from "react"
-import { Link } from "react-router"
+import { useLayoutEffect } from "react"
+import { useNavigate } from "react-router"
 
-import { signInViaTg } from "@/entities/user"
-import { useNotifyAction } from "@/shared/hooks"
 import { ROUTES } from "@/shared/routing"
 import { Flex, Form } from "@/shared/ui"
-import { Button, FormInput, FormPhoneInput, Tabs } from "@/shared/ui"
-import {
-  emailValidator,
-  phoneValidator,
-  requiredValidator,
-} from "@/shared/validators"
+import { Button, FormInput } from "@/shared/ui"
+import { emailValidator, requiredValidator } from "@/shared/validators"
 
-import { signIn } from "../api"
-import { type SignInTab, TABS } from "../model"
-import cls from "./styles.module.scss"
+import cls from "../../common/styles.module.scss"
+import { offer } from "../api"
 
 export const OfferAcceptance = reatomComponent(() => {
-  const [tab, setTab] = useState<SignInTab>("email")
+  const navigate = useNavigate()
 
-  const beforeAutofillValueRef = useRef("")
+  const [form] = Form.useForm<{ email: string }>()
 
-  const signInAction = useNotifyAction({
-    action: signIn,
-    onError: true,
-  })
+  useLayoutEffect(() => {
+    const params = new URLSearchParams(new URL(window.location.href).search)
+    const email = params.get("email")
 
-  const isSignInning =
-    signIn.status().isPending || signInViaTg.status().isPending
+    if (!email) {
+      navigate(ROUTES.auth.signIn)
+      return
+    }
+
+    offer()
+
+    // params.delete("email")
+    // window.history.replaceState(null, "", `?${params.toString()}`)
+
+    form.setFieldValue("email", email)
+  }, [])
+
+  const onClickOffer = () => window.open(offer.data(), "_blank")
 
   return (
     <Flex className={cls.wrap} align="center" justify="center" vertical>
-      <div className="title">Принятие оферты</div>
+      <Form form={form}>
+        <div className="title">Принятие оферты</div>
 
-      <Tabs
-        type="square-orange"
-        activeKey={tab}
-        onChange={(key) => setTab(key as SignInTab)}
-        items={TABS}
-      />
+        <div className="subtitle">
+          Чтобы войти в Личный кабинет, пожалуйста ознакомьтесь и примите
+          условия Оферты
+        </div>
 
-      <Form onFinish={signInAction}>
-        {tab === "email" ?
-          <FormInput
-            formItem={{
-              name: "email",
-              required: true,
-              rules: [requiredValidator(), emailValidator()],
-            }}
-            input={{
-              label: "E-mail",
-              placeholder: "example@mail.ru",
-              size: "l",
-            }}
-          />
-        : <FormPhoneInput
-            formItem={{
-              name: "phone",
-              required: true,
-              rules: [phoneValidator(false, false, beforeAutofillValueRef)],
-            }}
-            input={{
-              label: "Телефон",
-              placeholder: "+7 999 999 99 99",
-              size: "l",
-            }}
-          />
-        }
-
-        {/* TODO: Заменить надо Input.Password */}
         <FormInput
           formItem={{
-            name: "password",
+            name: "email",
             required: true,
-            rules: [requiredValidator()],
+            rules: [requiredValidator(), emailValidator()],
           }}
           input={{
-            className: "password-input",
-            label: <PasswordLabel />,
-            type: "password",
-            placeholder: "123456",
+            label: "E-mail",
+            placeholder: "example@mail.ru",
             size: "l",
           }}
         />
 
         <Form.Item>
-          <Button htmlType="submit" loading={isSignInning}>
-            Войти
-          </Button>
+          <Button htmlType="submit">Принять оферту</Button>
         </Form.Item>
+
+        <Button type="extra-outline" onClick={onClickOffer}>
+          Ознакомиться с офертой
+        </Button>
       </Form>
     </Flex>
   )
 })
-
-const PasswordLabel = () => {
-  return (
-    <span className="password-label">
-      <span>Пароль</span>
-      <Link to={ROUTES.auth.resetPassword}>Не помню пароль</Link>
-    </span>
-  )
-}
