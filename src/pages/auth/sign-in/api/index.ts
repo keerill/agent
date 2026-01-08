@@ -1,1 +1,1 @@
-export { signIn } from "./api"
+export { signIn, signInViaTg } from "./api"

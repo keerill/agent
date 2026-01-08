@@ -1,6 +1,6 @@
 import { memo, useEffect, useRef } from "react"
 
-import type { TelegramUser } from "@/entities/user"
+import type { TelegramUser } from "../model"
 
 interface Props {
   onAuth: (user: TelegramUser) => void

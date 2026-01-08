@@ -1,2 +1,2 @@
-export type { SignInForm, SignInTab } from "./types"
+export type { SignInForm, SignInTab, TelegramUser } from "./types"
 export { TABS } from "./constants"

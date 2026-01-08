@@ -2,7 +2,6 @@ import { reatomComponent } from "@reatom/react"
 import { useRef, useState } from "react"
 import { Link, useNavigate } from "react-router"
 
-import { type TelegramUser, signInViaTg } from "@/entities/user"
 import { useNotifyAction } from "@/shared/hooks"
 import { ROUTES } from "@/shared/routing"
 import { Flex, Form } from "@/shared/ui"
@@ -13,8 +12,13 @@ import {
   requiredValidator,
 } from "@/shared/validators"
 
-import { signIn } from "../api"
-import { type SignInForm, type SignInTab, TABS } from "../model"
+import { signIn, signInViaTg } from "../api"
+import {
+  type SignInForm,
+  type SignInTab,
+  TABS,
+  type TelegramUser,
+} from "../model"
 import { Telegram } from "./Telegram"
 import cls from "./styles.module.scss"
 
