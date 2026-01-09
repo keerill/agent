@@ -1,25 +1,17 @@
 import { reatomComponent } from "@reatom/react"
-import { useLayoutEffect } from "react"
 
 import { Flex, Form } from "@/shared/ui"
-import { Button, FormInput } from "@/shared/ui"
-import { emailValidator, requiredValidator } from "@/shared/validators"
+import { Button } from "@/shared/ui"
 
+import { offer } from "../../common/api"
+import { useEmail } from "../../common/model"
 import cls from "../../common/styles.module.scss"
-import { useEmail } from "../../common/useEmail"
-import { offer } from "../api"
 
 export const OfferConfirmation = reatomComponent(() => {
   const [form] = Form.useForm<{ email: string }>()
 
   const { email } = useEmail()
   console.log("email: ", email)
-
-  useLayoutEffect(() => {
-    offer()
-  }, [])
-
-  const onClickOffer = () => window.open(offer.data(), "_blank")
 
   return (
     <Flex className={cls.wrap} align="center" justify="center" vertical>
@@ -31,19 +23,6 @@ export const OfferConfirmation = reatomComponent(() => {
           получить в Telegram-боте
         </div>
 
-        <FormInput
-          formItem={{
-            name: "email",
-            required: true,
-            rules: [requiredValidator(), emailValidator()],
-          }}
-          input={{
-            label: "E-mail",
-            placeholder: "example@mail.ru",
-            size: "l",
-          }}
-        />
-
         <Form.Item>
           <Button htmlType="submit">Подтвердить оферту</Button>
         </Form.Item>
@@ -52,13 +31,16 @@ export const OfferConfirmation = reatomComponent(() => {
           className="tg-bot"
           type="extra-primary"
           onClick={() =>
-            window.open(import.meta.env.VITE_TG_AUTH_BOT_URL, "_blank")
+            window.open(import.meta.env.VITE_OFFER_AGREEMENT_BOT_LINK, "_blank")
           }
         >
           Перейти в Telegram-бота
         </Button>
 
-        <Button type="extra-primary" onClick={onClickOffer}>
+        <Button
+          type="extra-primary"
+          onClick={() => window.open(offer.data(), "_blank")}
+        >
           Ознакомиться с офертой
         </Button>
       </Form>

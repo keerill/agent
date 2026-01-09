@@ -7,9 +7,9 @@ import { Flex, Form } from "@/shared/ui"
 import { Button, FormInput } from "@/shared/ui"
 import { emailValidator, requiredValidator } from "@/shared/validators"
 
+import { offer } from "../../common/api"
+import { useEmail } from "../../common/model"
 import cls from "../../common/styles.module.scss"
-import { useEmail } from "../../common/useEmail"
-import { offer } from "../api"
 
 export const OfferAcceptance = reatomComponent(() => {
   const navigate = useNavigate()

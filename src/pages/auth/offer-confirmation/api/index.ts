@@ -1,1 +1,0 @@
-export { offer } from "./api"
