@@ -7,16 +7,54 @@ import { Button } from "@/shared/ui"
 import { offer } from "../../common/api"
 import { useEmail } from "../../common/model"
 import cls from "../../common/styles.module.scss"
+import { otpValidator } from "../model"
 
 export const OfferConfirmation = reatomComponent(() => {
-  const [form] = Form.useForm<{ email: string }>()
-
   const { email } = useEmail()
   console.log("email: ", email)
 
+  //   export const confirmOfferAsync = reatomAsync(async (ctx, code: string) => {
+  //   const { userEmail } = ctx.get(offerDataAtom)
+
+  //   return await customFetch("/offer-agreement/sign", {
+  //     method: "POST",
+  //     body: {
+  //       email: userEmail,
+  //       code,
+  //     },
+  //   })
+  // }, "confirmOfferAsync")
+  // const onSubmit = async (body: ConfirmModel) => {
+  //   try {
+  //     await confirmOffer(body.code)
+
+  //     const res = await fetchLogin(loginData)
+
+  //     if (!("offerData" in res)) {
+  //       fetchPermissions()
+  //       setUser(res)
+  //       setFormStatus("login")
+  //       setLoginData({
+  //         tab: "email",
+  //         email: "",
+  //         phone: "",
+  //         password: "",
+  //       })
+  //     }
+
+  //     navigate("/")
+  //   } catch (err) {
+  //     const error: Error =
+  //       err instanceof Error ? err : new Error("Неверная почта или пароль")
+  //     return {
+  //       [FORM_ERROR]: error.message,
+  //     }
+  //   }
+  // }
+
   return (
     <Flex className={cls.wrap} align="center" justify="center" vertical>
-      <Form form={form}>
+      <Form onFinish={(v) => console.log("v: ", v)}>
         <div className="title">Принятие оферты</div>
 
         <div className="subtitle">
@@ -24,7 +62,7 @@ export const OfferConfirmation = reatomComponent(() => {
           получить в Telegram-боте
         </div>
 
-        <Form.Item>
+        <Form.Item name="code" rules={[otpValidator()]}>
           <Input.OTP />
         </Form.Item>
 

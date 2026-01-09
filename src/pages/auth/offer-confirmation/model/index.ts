@@ -1,0 +1,1 @@
+export { otpValidator } from "./otpValidator"
