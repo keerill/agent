@@ -1,4 +1,5 @@
 import { reatomComponent } from "@reatom/react"
+import { Input } from "antd"
 
 import { Flex, Form } from "@/shared/ui"
 import { Button } from "@/shared/ui"
@@ -22,6 +23,10 @@ export const OfferConfirmation = reatomComponent(() => {
           Для того, чтобы принять оферту, введите код подтверждения. Код можно
           получить в Telegram-боте
         </div>
+
+        <Form.Item>
+          <Input.OTP />
+        </Form.Item>
 
         <Form.Item>
           <Button htmlType="submit">Подтвердить оферту</Button>
