@@ -1,3 +1,9 @@
+export interface SignInForm {
+  email?: string
+  phone?: string
+  password: string
+}
+
 export interface Offer {
   id: number
   name: string

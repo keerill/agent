@@ -8,27 +8,32 @@ import { Button, FormInput } from "@/shared/ui"
 import { emailValidator, requiredValidator } from "@/shared/validators"
 
 import { offer } from "../../common/api"
-import { useEmail } from "../../common/model"
+import { querykeys, useCreds } from "../../common/model"
 import cls from "../../common/styles.module.scss"
+import type { AcceptanceForm } from "../model"
 
 export const OfferAcceptance = reatomComponent(() => {
   const navigate = useNavigate()
 
-  const [form] = Form.useForm<{ email: string }>()
+  const [form] = Form.useForm<AcceptanceForm>()
 
-  const { email } = useEmail()
+  const { email, password } = useCreds()
 
   useEffect(() => {
     offer()
     form.setFieldValue("email", email)
+    form.setFieldValue("password", password)
   }, [])
 
   const onClickOffer = () => window.open(offer.data(), "_blank")
 
   const onSubmit = () => {
-    navigate(`${ROUTES.auth.offerConfirmation}?email=${email}`, {
-      replace: true,
-    })
+    navigate(
+      `${ROUTES.auth.offerConfirmation}?${querykeys.email}=${form.getFieldValue("email")}&${querykeys.password}=${form.getFieldValue("password")}`,
+      {
+        replace: true,
+      },
+    )
   }
 
   return (

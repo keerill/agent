@@ -5,13 +5,14 @@ import { Flex, Form } from "@/shared/ui"
 import { Button } from "@/shared/ui"
 
 import { offer } from "../../common/api"
-import { useEmail } from "../../common/model"
+import { useCreds } from "../../common/model"
 import cls from "../../common/styles.module.scss"
 import { otpValidator } from "../model"
 
 export const OfferConfirmation = reatomComponent(() => {
-  const { email } = useEmail()
+  const { email, password } = useCreds()
   console.log("email: ", email)
+  console.log("password: ", password)
 
   //   export const confirmOfferAsync = reatomAsync(async (ctx, code: string) => {
   //   const { userEmail } = ctx.get(offerDataAtom)

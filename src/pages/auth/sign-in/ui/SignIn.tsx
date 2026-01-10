@@ -12,14 +12,11 @@ import {
   requiredValidator,
 } from "@/shared/validators"
 
+import { signIn } from "../../common/api"
+import { type SignInForm, querykeys } from "../../common/model"
 import cls from "../../common/styles.module.scss"
-import { signIn, signInViaTg } from "../api"
-import {
-  type SignInForm,
-  type SignInTab,
-  TABS,
-  type TelegramUser,
-} from "../model"
+import { signInViaTg } from "../api"
+import { type SignInTab, TABS, type TelegramUser } from "../model"
 import { Telegram } from "./Telegram"
 
 const onAuthTg = (user: TelegramUser) => {
@@ -45,9 +42,12 @@ export const SignIn = reatomComponent(() => {
           error.message ===
             "Необходимо подписать договор оферты для продолжения работы"
         ) {
-          navigate(`${ROUTES.auth.offerAcceptance}?email=${v.email}`, {
-            replace: true,
-          })
+          navigate(
+            `${ROUTES.auth.offerAcceptance}?${querykeys.email}=${v.email}&${querykeys.password}=${v.password}`,
+            {
+              replace: true,
+            },
+          )
         }
       }
     },
