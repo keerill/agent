@@ -1,5 +1,6 @@
 import { action, withAsync, withAsyncData, wrap } from "@reatom/core"
 
+import { permissions } from "@/entities/permissions"
 import { api } from "@/shared/api"
 
 import { signIn } from "../../common/api"
@@ -14,6 +15,7 @@ interface ConfirmDto {
 export const confirmOffer = action(async (body: ConfirmDto) => {
   await wrap(api.post("/offer-agreement/sign", { body }))
   await wrap(signIn({ email: body.email, password: body.password }))
+  await wrap(permissions())
 }).extend(withAsync({ status: true }))
 
 export const offer = action(async () => {
