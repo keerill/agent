@@ -35,6 +35,7 @@ export const SignIn = reatomComponent(() => {
   const signInAction = useNotifyAction({
     action: async (v: SignInForm) => {
       try {
+        // TODO: добавить пермишны
         await signIn(v)
       } catch (error) {
         if (

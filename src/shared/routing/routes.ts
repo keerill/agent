@@ -6,7 +6,6 @@ export const ROUTES = {
     signIn: "/auth/sign-in",
     resetPassword: "/auth/reset-password",
     offerAcceptance: "/auth/offer-acceptance",
-    offerConfirmation: "/auth/offer-confirmation",
   },
 
   notFound: "/not-found",

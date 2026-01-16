@@ -1,1 +1,2 @@
-export type { AcceptanceForm } from "./types"
+export type { AcceptanceForm, Offer } from "./types"
+export { otpValidator } from "./otpValidator"

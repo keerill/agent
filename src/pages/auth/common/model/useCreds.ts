@@ -1,19 +1,19 @@
 import { useLayoutEffect, useState } from "react"
 import { useNavigate, useSearchParams } from "react-router"
 
-// import { ROUTES } from "@/shared/routing"
+import { ROUTES } from "@/shared/routing"
 
 export const useCreds = () => {
   const navigate = useNavigate()
   const [params, setParams] = useSearchParams()
-  const [email] = useState<string | null>(() => params.get("email"))
-  const [password] = useState<string | null>(() => params.get("password"))
+  const [email] = useState<string>(() => params.get("email") || "")
+  const [password] = useState<string>(() => params.get("password") || "")
 
   useLayoutEffect(() => {
-    // if (!email || !password) {
-    //   navigate(ROUTES.auth.signIn, { replace: true })
-    //   return
-    // }
+    if (!email || !password) {
+      navigate(ROUTES.auth.signIn, { replace: true })
+      return
+    }
 
     const nextParams = new URLSearchParams(params)
     nextParams.delete("email")

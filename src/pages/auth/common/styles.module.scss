@@ -38,6 +38,10 @@
     .ant-form-item {
       margin-bottom: var(--gap-xs);
 
+      &.otp {
+        margin-bottom: var(--gap-xl);
+      }
+
       .ant-otp {
         display: flex;
 
