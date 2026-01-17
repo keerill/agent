@@ -13,7 +13,7 @@ import {
 } from "@/shared/validators"
 
 import { signIn } from "../../common/api"
-import { type SignInForm, querykeys } from "../../common/model"
+import { type SignInForm, authMeData, querykeys } from "../../common/model"
 import cls from "../../common/styles.module.scss"
 import { signInViaTg } from "../api"
 import { type SignInTab, TABS, type TelegramUser } from "../model"
@@ -35,7 +35,6 @@ export const SignIn = reatomComponent(() => {
   const signInAction = useNotifyAction({
     action: async (v: SignInForm) => {
       try {
-        // TODO: добавить пермишны
         await signIn(v)
       } catch (error) {
         if (
@@ -44,7 +43,7 @@ export const SignIn = reatomComponent(() => {
             "Необходимо подписать договор оферты для продолжения работы"
         ) {
           navigate(
-            `${ROUTES.auth.offerAcceptance}?${querykeys.email}=${v.email}&${querykeys.password}=${v.password}`,
+            `${ROUTES.auth.offerAcceptance}?${querykeys.email}=${authMeData()?.email || v.email}&${querykeys.password}=${v.password}`,
             {
               replace: true,
             },
@@ -93,6 +92,8 @@ export const SignIn = reatomComponent(() => {
               label: "Телефон",
               placeholder: "+7 999 999 99 99",
               size: "l",
+              defaultIso2: "ru",
+              defaultValue: "+7",
             }}
           />
         }

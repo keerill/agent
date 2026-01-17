@@ -3,7 +3,7 @@ import { action, withAsync, wrap } from "@reatom/core"
 import { initUser } from "@/entities/user"
 import { api } from "@/shared/api"
 
-import type { SignInForm } from "../../model"
+import { type SignInForm, authMeData } from "../../model"
 
 export const signIn = action(async (form: SignInForm) => {
   const { email, phone, password } = form
@@ -15,5 +15,5 @@ export const signIn = action(async (form: SignInForm) => {
   }
 
   await wrap(api.post("/auth/login", { body }))
-  await wrap(initUser())
+  await wrap(initUser(authMeData.set))
 }).extend(withAsync({ status: true }))

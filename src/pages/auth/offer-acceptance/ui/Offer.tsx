@@ -53,7 +53,7 @@ export const OfferAcceptance = reatomComponent(() => {
             rules={[otpValidator()]}
             validateTrigger="onBlur"
           >
-            <Input.OTP />
+            <Input.OTP length={4} />
           </Form.Item>
         )}
 

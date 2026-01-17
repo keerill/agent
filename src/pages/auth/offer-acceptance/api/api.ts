@@ -12,7 +12,11 @@ interface ConfirmDto {
 }
 
 export const confirmOffer = action(async (body: ConfirmDto) => {
-  await wrap(api.post("/offer-agreement/sign", { body }))
+  await wrap(
+    api.post("/offer-agreement/sign", {
+      body: { email: body.email, code: body.code },
+    }),
+  )
   await wrap(signIn({ email: body.email, password: body.password }))
 }).extend(withAsync({ status: true }))
 
