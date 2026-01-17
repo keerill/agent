@@ -1,4 +1,4 @@
 export interface Permission {
   module: string
-  operation: string
+  operation: "read" | "update" | "create" | "delete"
 }

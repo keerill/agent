@@ -1,79 +1,39 @@
+import { action, atom, withAsync, withLocalStorage, wrap } from "@reatom/core"
+
+import { withReset } from "../utils"
 import { PERSIST_KEY } from "./constants"
-import type { FeatureFlagsMap, FlagName } from "./types"
+import type { FeatureFlag, FeatureFlagsMap, FlagName } from "./types"
 
-class FeatureFlagService {
-  private flags: FeatureFlagsMap
-  private initialFlags: FeatureFlagsMap
-
-  constructor() {
-    const localOverrides = JSON.parse(localStorage.getItem(PERSIST_KEY) || "{}")
-    const ssrFlags = window.featureFlags || {}
-    this.flags = { ...ssrFlags, ...localOverrides }
-    this.initialFlags = { ...ssrFlags, ...localOverrides }
-  }
-
-  isEnabled(flag: FlagName): boolean {
-    return Boolean(this.flags[flag]?.isOn)
-  }
-
-  getAll(): FeatureFlagsMap {
-    return { ...this.flags }
-  }
-
-  setFlag(flag: FlagName, isOn: boolean) {
-    this.flags[flag] = { ...this.flags[flag], isOn }
-    localStorage.setItem(PERSIST_KEY, JSON.stringify(this.flags))
-  }
-
-  setFlags(flags: FeatureFlagsMap) {
-    this.flags = { ...flags }
-    localStorage.setItem(PERSIST_KEY, JSON.stringify(this.flags))
-  }
-
-  reset() {
-    localStorage.removeItem(PERSIST_KEY)
-    this.flags = { ...this.initialFlags }
-  }
-}
-
-const initFeatureFlags = async () => {
-  const flags = await fetchFeatureFlags()
-
-  window.featureFlags = flags
-}
-
-type FlagsResponse = {
-  name: string
+interface FlagDto {
+  name: FlagName
   description: string
   jiraLink: string
   isEnabled: boolean
-}[]
-
-const fetchFeatureFlags = async (): Promise<FeatureFlagsMap | object> => {
-  try {
-    const response: FlagsResponse = await fetch(
-      `${import.meta.env.VITE_SERVER_URL}/api/v1/feature`,
-    ).then((res) => res.json())
-
-    const flags = Object.fromEntries(
-      response.map(({ name, ...flag }) => [
-        name,
-        {
-          description: flag.description,
-          jiraLink: flag.jiraLink,
-          isOn: flag.isEnabled,
-        },
-      ]),
-    )
-
-    return flags || {}
-  } catch {
-    return {}
-  }
 }
 
-;(async () => {
-  await initFeatureFlags()
-})()
+const initialFeatureFlags = atom<FeatureFlagsMap>()
+export const featureFlags = atom<FeatureFlagsMap>().extend(
+  withLocalStorage(PERSIST_KEY),
+  withReset(initialFeatureFlags()),
+)
 
-export const featureFlags = new FeatureFlagService()
+export const initFeatureFlags = action(async () => {
+  const raw = await wrap(
+    fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/feature`),
+  )
+  const data: FlagDto[] = await wrap(raw.json())
+
+  const flags = Object.fromEntries<FeatureFlag>(
+    data.map(({ name, ...flag }) => [
+      name,
+      {
+        description: flag.description,
+        jiraLink: flag.jiraLink,
+        isOn: flag.isEnabled,
+      },
+    ]),
+  ) as FeatureFlagsMap
+
+  featureFlags.set(flags)
+  initialFeatureFlags.set(flags)
+}).extend(withAsync({ status: true }))

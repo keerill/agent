@@ -2,6 +2,7 @@ import { reatomComponent } from "@reatom/react"
 import { useEffect } from "react"
 
 import { initUser, signOut, user } from "@/entities/user"
+import { initFeatureFlags } from "@/shared/feature-flags"
 import { ROUTES } from "@/shared/routing"
 import { Spin } from "@/shared/ui"
 
@@ -14,10 +15,13 @@ export const AuthProvider = reatomComponent(
     const isSignOutting = signOut.status().isPending
 
     const isIniting =
-      initUser.status().isPending &&
-      !authRoutes.includes(window.location.pathname)
+      initFeatureFlags.status().isPending ||
+      (initUser.status().isPending &&
+        !authRoutes.includes(window.location.pathname))
 
     useEffect(() => {
+      initFeatureFlags()
+
       if (!user()) return
 
       initUser()

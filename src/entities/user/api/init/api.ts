@@ -1,5 +1,6 @@
 import { action, withAsync, wrap } from "@reatom/core"
 
+import { permissions } from "@/entities/permissions"
 import { api } from "@/shared/api"
 
 import { type User, user } from "../../model"
@@ -16,4 +17,6 @@ export const initUser = action(async () => {
   if ("message" in meData) return
 
   user.set(meData)
+
+  await wrap(permissions())
 }).extend(withAsync({ status: true }))
