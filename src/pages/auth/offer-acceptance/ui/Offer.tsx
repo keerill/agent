@@ -6,19 +6,21 @@ import { useNotifyAction } from "@/shared/hooks"
 import { Button, Flex, Form } from "@/shared/ui"
 
 import { useCreds } from "../../common/model"
-import cls from "../../common/styles.module.scss"
+import cls from "../../common/ui/styles.module.scss"
 import { confirmOffer, offer } from "../api"
 import { type AcceptanceForm, otpValidator } from "../model"
 
 export const OfferAcceptance = reatomComponent(() => {
   const [form] = Form.useForm<AcceptanceForm>()
-  const { email, password } = useCreds()
+  const { email, password } = useCreds({ redirectIfMissing: true })
 
   const [hasAcceptedOffer, setHasAcceptedOffer] = useState(false)
 
   useEffect(() => {
+    if (!email) return
+
     offer()
-  }, [])
+  }, [email])
 
   const confirmOfferAction = useNotifyAction({
     action: ({ code }: AcceptanceForm) =>

@@ -29,6 +29,10 @@ export const SignIn = reatomComponent(() => {
   const navigate = useNavigate()
   const [tab, setTab] = useState<AuthTab>("email")
 
+  const [form] = Form.useForm<SignInForm>()
+
+  const email = Form.useWatch("email", form) || ""
+
   const signInAction = useNotifyAction({
     action: async (values: SignInForm) => {
       try {
@@ -45,6 +49,8 @@ export const SignIn = reatomComponent(() => {
             }&${QUERY_KEYS.password}=${values.password}`,
             { replace: true },
           )
+        } else {
+          throw error
         }
       }
     },
@@ -56,7 +62,7 @@ export const SignIn = reatomComponent(() => {
 
   return (
     <Flex className={cls.wrap} align="center" justify="center" vertical>
-      <Form onFinish={signInAction}>
+      <Form form={form} onFinish={signInAction}>
         <div className="title">Авторизация</div>
 
         <AuthTabsForm tab={tab} onTabChange={setTab} />
@@ -69,7 +75,7 @@ export const SignIn = reatomComponent(() => {
           }}
           input={{
             className: "password-input",
-            label: <PasswordLabel />,
+            label: <PasswordLabel email={email} />,
             type: "password",
             placeholder: "123456",
             size: "l",
@@ -88,9 +94,19 @@ export const SignIn = reatomComponent(() => {
   )
 })
 
-const PasswordLabel = () => (
-  <span className="password-label">
-    <span>Пароль</span>
-    <Link to={ROUTES.auth.passwordReset}>Не помню пароль</Link>
-  </span>
-)
+interface PasswordLabelProps {
+  email: string
+}
+
+const PasswordLabel = (props: PasswordLabelProps) => {
+  const { email } = props
+
+  return (
+    <span className="password-label">
+      <span>Пароль</span>
+      <Link to={`${ROUTES.auth.passwordReset}?${QUERY_KEYS.email}=${email}`}>
+        Не помню пароль
+      </Link>
+    </span>
+  )
+}

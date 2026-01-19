@@ -1,1 +1,1 @@
-export { confirmOffer, offer } from "./api"
+export { resetPassword } from "./api"

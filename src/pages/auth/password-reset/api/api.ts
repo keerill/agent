@@ -1,28 +1,16 @@
-import { action, withAsync, withAsyncData, wrap } from "@reatom/core"
+import { action, withAsync, wrap } from "@reatom/core"
 
 import { api } from "@/shared/api"
 
-import { signIn } from "../../common/api"
-import type { Offer } from "../model"
+import { type ResetForm } from "../model"
 
-interface ConfirmDto {
-  email: string
-  password: string
-  code: number
-}
+export const resetPassword = action(async (form: ResetForm) => {
+  const { email, phone } = form
 
-export const confirmOffer = action(async (body: ConfirmDto) => {
-  await wrap(
-    api.post("/offer-agreement/sign", {
-      body: { email: body.email, code: body.code },
-    }),
-  )
-  await wrap(signIn({ email: body.email, password: body.password }))
+  const body = {
+    email,
+    phone: phone?.replace(/\D/g, ""),
+  }
+
+  await wrap(api.post("/auth/reset-password", { body }))
 }).extend(withAsync({ status: true }))
-
-export const offer = action(async () => {
-  const data = await wrap(api.get<Offer>("/offer-agreement"))
-  const urlResponse = await wrap(fetch(data.files[0].downloadUrl))
-  const blob = await wrap(urlResponse.blob())
-  return URL.createObjectURL(blob)
-}).extend(withAsyncData())

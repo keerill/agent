@@ -3,14 +3,20 @@ import { useNavigate, useSearchParams } from "react-router"
 
 import { ROUTES } from "@/shared/routing"
 
-export const useCreds = () => {
+interface Options {
+  redirectIfMissing?: boolean
+}
+
+export const useCreds = (options?: Options) => {
+  const { redirectIfMissing } = options || {}
+
   const navigate = useNavigate()
   const [params, setParams] = useSearchParams()
   const [email] = useState<string>(() => params.get("email") || "")
   const [password] = useState<string>(() => params.get("password") || "")
 
   useLayoutEffect(() => {
-    if (!email || !password) {
+    if (redirectIfMissing && (!email || !password)) {
       navigate(ROUTES.auth.signIn, { replace: true })
       return
     }
@@ -19,7 +25,7 @@ export const useCreds = () => {
     nextParams.delete("email")
     nextParams.delete("password")
     setParams(nextParams, { replace: true })
-  }, [email, password, navigate, params, setParams])
+  }, [redirectIfMissing, email, password, navigate, params, setParams])
 
   return { email, password }
 }

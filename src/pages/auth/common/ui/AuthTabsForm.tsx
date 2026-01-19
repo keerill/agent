@@ -9,12 +9,14 @@ import {
 
 import { type AuthTab, TABS } from "../model"
 
-type Props = {
+interface Props {
   tab: AuthTab
   onTabChange: (tab: AuthTab) => void
 }
 
-export const AuthTabsForm = ({ tab, onTabChange }: Props) => {
+export const AuthTabsForm = (props: Props) => {
+  const { tab, onTabChange } = props
+
   const beforeAutofillValueRef = useRef("")
 
   return (
