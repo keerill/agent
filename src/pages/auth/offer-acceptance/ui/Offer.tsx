@@ -3,8 +3,7 @@ import { Input } from "antd"
 import { useEffect, useState } from "react"
 
 import { useNotifyAction } from "@/shared/hooks"
-import { Flex, Form } from "@/shared/ui"
-import { Button } from "@/shared/ui"
+import { Button, Flex, Form } from "@/shared/ui"
 
 import { useCreds } from "../../common/model"
 import cls from "../../common/styles.module.scss"
@@ -13,40 +12,48 @@ import { type AcceptanceForm, otpValidator } from "../model"
 
 export const OfferAcceptance = reatomComponent(() => {
   const [form] = Form.useForm<AcceptanceForm>()
-
   const { email, password } = useCreds()
 
-  const [isAccepted, setIsAccepted] = useState(false)
+  const [hasAcceptedOffer, setHasAcceptedOffer] = useState(false)
 
   useEffect(() => {
     offer()
   }, [])
 
-  const onClickOffer = () => window.open(offer.data(), "_blank")
-
   const confirmOfferAction = useNotifyAction({
-    action: confirmOffer,
+    action: ({ code }: AcceptanceForm) =>
+      confirmOffer({ email, password, code }),
     onError: true,
   })
+
   const isConfirming = confirmOffer.status().isPending
 
-  const onSubmit = () => {
-    confirmOfferAction({ email, password, code: form.getFieldValue("code") })
+  const handleAcceptClick = () => {
+    requestAnimationFrame(() => setHasAcceptedOffer(true))
+  }
+
+  const handleOpenBot = () => {
+    window.open(import.meta.env.VITE_OFFER_AGREEMENT_BOT_LINK, "_blank")
+  }
+
+  const handleOpenOffer = () => {
+    const url = offer.data()
+    if (url) window.open(url, "_blank")
   }
 
   return (
     <Flex className={cls.wrap} align="center" justify="center" vertical>
-      <Form form={form} onFinish={onSubmit}>
+      <Form form={form} onFinish={confirmOfferAction}>
         <div className="title">Принятие оферты</div>
 
         <div className="subtitle">
-          {isAccepted ?
+          {hasAcceptedOffer ?
             "Для того, чтобы принять оферту, введите код подтверждения. Код можно получить в Telegram-боте"
           : "Чтобы войти в Личный кабинет, пожалуйста ознакомьтесь и примите условия Оферты"
           }
         </div>
 
-        {isAccepted && (
+        {hasAcceptedOffer && (
           <Form.Item
             name="code"
             className="otp"
@@ -59,30 +66,25 @@ export const OfferAcceptance = reatomComponent(() => {
 
         <Form.Item>
           <Button
-            htmlType={isAccepted ? "submit" : "button"}
+            htmlType={hasAcceptedOffer ? "submit" : "button"}
             loading={isConfirming}
-            onClick={() => requestAnimationFrame(() => setIsAccepted(true))}
+            onClick={!hasAcceptedOffer ? handleAcceptClick : undefined}
           >
-            {isAccepted ? "Подтвердить" : "Принять оферту"}
+            {hasAcceptedOffer ? "Подтвердить" : "Принять оферту"}
           </Button>
         </Form.Item>
 
-        {isAccepted && (
+        {hasAcceptedOffer && (
           <Button
             className="tg-bot"
             type="extra-primary"
-            onClick={() =>
-              window.open(
-                import.meta.env.VITE_OFFER_AGREEMENT_BOT_LINK,
-                "_blank",
-              )
-            }
+            onClick={handleOpenBot}
           >
             Перейти в Telegram-бота
           </Button>
         )}
 
-        <Button type="extra-primary" onClick={onClickOffer}>
+        <Button type="extra-primary" onClick={handleOpenOffer}>
           Ознакомиться с офертой
         </Button>
       </Form>

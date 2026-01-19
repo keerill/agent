@@ -3,3 +3,5 @@ export interface SignInForm {
   phone?: string
   password: string
 }
+
+export type AuthTab = "email" | "phone"

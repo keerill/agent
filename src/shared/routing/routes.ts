@@ -4,8 +4,8 @@ export const ROUTES = {
 
   auth: {
     signIn: "/auth/sign-in",
-    resetPassword: "/auth/reset-password",
     offerAcceptance: "/auth/offer-acceptance",
+    passwordReset: "/auth/password-reset",
   },
 
   notFound: "/not-found",

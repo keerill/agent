@@ -1,5 +1,5 @@
 export interface AcceptanceForm {
-  code: number
+  code: string
 }
 
 export interface Offer {

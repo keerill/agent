@@ -1,5 +1,3 @@
-export type SignInTab = "email" | "phone"
-
 export interface TelegramUser {
   id: number
   first_name: string

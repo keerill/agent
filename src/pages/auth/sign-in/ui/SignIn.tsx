@@ -1,41 +1,38 @@
 import { reatomComponent } from "@reatom/react"
-import { useRef, useState } from "react"
+import { useState } from "react"
 import { Link, useNavigate } from "react-router"
 
 import { useNotifyAction } from "@/shared/hooks"
 import { ROUTES } from "@/shared/routing"
-import { Flex, Form } from "@/shared/ui"
-import { Button, FormInput, FormPhoneInput, Tabs } from "@/shared/ui"
-import {
-  emailValidator,
-  phoneValidator,
-  requiredValidator,
-} from "@/shared/validators"
+import { Button, Flex, Form, FormInput } from "@/shared/ui"
+import { requiredValidator } from "@/shared/validators"
 
 import { signIn } from "../../common/api"
-import { type SignInForm, authMeData, querykeys } from "../../common/model"
-import cls from "../../common/styles.module.scss"
+import {
+  type AuthTab,
+  QUERY_KEYS,
+  type SignInForm,
+  authMeData,
+} from "../../common/model"
+import { AuthTabsForm } from "../../common/ui"
+import cls from "../../common/ui/styles.module.scss"
 import { signInViaTg } from "../api"
-import { type SignInTab, TABS, type TelegramUser } from "../model"
+import { type TelegramUser } from "../model"
 import { Telegram } from "./Telegram"
 
-const onAuthTg = (user: TelegramUser) => {
+const handleTgAuth = (user: TelegramUser) => {
   if (signIn.status().isPending || signInViaTg.status().isPending) return
-
   signInViaTg(user)
 }
 
 export const SignIn = reatomComponent(() => {
   const navigate = useNavigate()
-
-  const [tab, setTab] = useState<SignInTab>("email")
-
-  const beforeAutofillValueRef = useRef("")
+  const [tab, setTab] = useState<AuthTab>("email")
 
   const signInAction = useNotifyAction({
-    action: async (v: SignInForm) => {
+    action: async (values: SignInForm) => {
       try {
-        await signIn(v)
+        await signIn(values)
       } catch (error) {
         if (
           error instanceof Error &&
@@ -43,10 +40,10 @@ export const SignIn = reatomComponent(() => {
             "Необходимо подписать договор оферты для продолжения работы"
         ) {
           navigate(
-            `${ROUTES.auth.offerAcceptance}?${querykeys.email}=${authMeData()?.email || v.email}&${querykeys.password}=${v.password}`,
-            {
-              replace: true,
-            },
+            `${ROUTES.auth.offerAcceptance}?${QUERY_KEYS.email}=${
+              authMeData()?.email || values.email
+            }&${QUERY_KEYS.password}=${values.password}`,
+            { replace: true },
           )
         }
       }
@@ -62,43 +59,8 @@ export const SignIn = reatomComponent(() => {
       <Form onFinish={signInAction}>
         <div className="title">Авторизация</div>
 
-        <Tabs
-          type="square-orange"
-          activeKey={tab}
-          onChange={(key) => setTab(key as SignInTab)}
-          items={TABS}
-        />
+        <AuthTabsForm tab={tab} onTabChange={setTab} />
 
-        {tab === "email" ?
-          <FormInput
-            formItem={{
-              name: "email",
-              required: true,
-              rules: [requiredValidator(), emailValidator()],
-            }}
-            input={{
-              label: "E-mail",
-              placeholder: "example@mail.ru",
-              size: "l",
-            }}
-          />
-        : <FormPhoneInput
-            formItem={{
-              name: "phone",
-              required: true,
-              rules: [phoneValidator(false, false, beforeAutofillValueRef)],
-            }}
-            input={{
-              label: "Телефон",
-              placeholder: "+7 999 999 99 99",
-              size: "l",
-              defaultIso2: "ru",
-              defaultValue: "+7",
-            }}
-          />
-        }
-
-        {/* TODO: Заменить надо Input.Password */}
         <FormInput
           formItem={{
             name: "password",
@@ -120,17 +82,15 @@ export const SignIn = reatomComponent(() => {
           </Button>
         </Form.Item>
 
-        <Telegram onAuth={onAuthTg} />
+        <Telegram onAuth={handleTgAuth} />
       </Form>
     </Flex>
   )
 })
 
-const PasswordLabel = () => {
-  return (
-    <span className="password-label">
-      <span>Пароль</span>
-      <Link to={ROUTES.auth.resetPassword}>Не помню пароль</Link>
-    </span>
-  )
-}
+const PasswordLabel = () => (
+  <span className="password-label">
+    <span>Пароль</span>
+    <Link to={ROUTES.auth.passwordReset}>Не помню пароль</Link>
+  </span>
+)
