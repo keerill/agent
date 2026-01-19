@@ -1,7 +1,7 @@
 import type { RouteObject } from "react-router"
 
 import type { User, UserRole } from "@/entities/user"
-import type { FlagName } from "@/shared/feature-flags"
+import type { FeatureFlagName } from "@/shared/feature-flags"
 
 export interface Route extends Omit<RouteObject, "children" | "element"> {
   /** Путь маршрута */
@@ -43,7 +43,7 @@ interface RouteGuard {
   /** Запрещённые роли */
   deniedRoles?: UserRole[]
   /** Feature flag, который должен быть включен */
-  flag?: FlagName
+  flag?: FeatureFlagName
   /** Проверка через кастомную функцию */
   customCheck?: (params: {
     user: User | null

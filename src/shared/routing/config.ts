@@ -7,6 +7,7 @@ const Catalog = lazy(() => import("@/pages/catalog"))
 const SignIn = lazy(() => import("@/pages/auth/sign-in"))
 const OfferAcceptance = lazy(() => import("@/pages/auth/offer-acceptance"))
 const PasswordReset = lazy(() => import("@/pages/auth/password-reset"))
+const FeatureFlags = lazy(() => import("@/pages/feature-flags"))
 
 export const ROUTES_CONFIG: Record<string, Route[]> = {
   default: [
@@ -15,10 +16,6 @@ export const ROUTES_CONFIG: Record<string, Route[]> = {
       Component: Catalog,
       meta: {
         title: "Каталог",
-        showInMenu: true,
-        order: 0,
-        icon: "icon",
-        menuGroup: "main",
       },
     },
     {
@@ -26,10 +23,13 @@ export const ROUTES_CONFIG: Record<string, Route[]> = {
       Component: Catalog,
       meta: {
         title: "Каталог item",
-        showInMenu: true,
-        order: 0,
-        icon: "icon",
-        menuGroup: "main",
+      },
+    },
+    {
+      path: ROUTES.featureFlags,
+      Component: FeatureFlags,
+      meta: {
+        title: "Флаги",
       },
     },
   ],

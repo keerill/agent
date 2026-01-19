@@ -1,39 +1,59 @@
 import { action, atom, withAsync, withLocalStorage, wrap } from "@reatom/core"
 
-import { withReset } from "../utils"
 import { PERSIST_KEY } from "./constants"
-import type { FeatureFlag, FeatureFlagsMap, FlagName } from "./types"
+import type { FeatureFlagName, FeatureFlagsMap } from "./types"
 
 interface FlagDto {
-  name: FlagName
+  name: FeatureFlagName
   description: string
   jiraLink: string
   isEnabled: boolean
 }
 
-const initialFeatureFlags = atom<FeatureFlagsMap>()
-export const featureFlags = atom<FeatureFlagsMap>().extend(
+export const featureFlags = atom<FeatureFlagsMap>({} as FeatureFlagsMap).extend(
   withLocalStorage(PERSIST_KEY),
-  withReset(initialFeatureFlags()),
 )
 
-export const initFeatureFlags = action(async () => {
+export const initFeatureFlags = action(async (reset?: boolean) => {
   const raw = await wrap(
     fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/feature`),
   )
   const data: FlagDto[] = await wrap(raw.json())
 
-  const flags = Object.fromEntries<FeatureFlag>(
-    data.map(({ name, ...flag }) => [
+  const remoteFlags = mapDtoToFlags(data)
+
+  if (!reset) {
+    const persisted = featureFlags()
+    if (persisted) {
+      featureFlags.set(mergeWithPersisted(remoteFlags, persisted))
+      return
+    }
+  }
+
+  featureFlags.set(remoteFlags)
+}).extend(withAsync({ status: true }))
+
+const mapDtoToFlags = (data: FlagDto[]): FeatureFlagsMap =>
+  Object.fromEntries(
+    data.map(({ name, description, jiraLink, isEnabled }) => [
       name,
-      {
-        description: flag.description,
-        jiraLink: flag.jiraLink,
-        isOn: flag.isEnabled,
-      },
+      { description, jiraLink, isOn: isEnabled },
     ]),
   ) as FeatureFlagsMap
 
-  featureFlags.set(flags)
-  initialFeatureFlags.set(flags)
-}).extend(withAsync({ status: true }))
+const mergeWithPersisted = (
+  remote: FeatureFlagsMap,
+  persisted: FeatureFlagsMap,
+): FeatureFlagsMap =>
+  Object.fromEntries(
+    Object.entries(remote).map(([key, value]) => [
+      key,
+      {
+        ...value,
+        isOn:
+          key in persisted ?
+            persisted[key as FeatureFlagName].isOn
+          : value.isOn,
+      },
+    ]),
+  ) as FeatureFlagsMap

@@ -15,7 +15,7 @@ export const AuthProvider = reatomComponent(
     const isSignOutting = signOut.status().isPending
 
     const isIniting =
-      initFeatureFlags.status().isPending ||
+      initFeatureFlags.status().isFirstPending ||
       (initUser.status().isPending &&
         !authRoutes.includes(window.location.pathname))
 

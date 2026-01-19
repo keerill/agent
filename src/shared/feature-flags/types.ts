@@ -1,4 +1,4 @@
-export type FlagName =
+export type FeatureFlagName =
   | "installments"
   | "uploadOffers"
   | "chatBot"
@@ -17,4 +17,4 @@ export interface FeatureFlag {
   isOn: boolean
 }
 
-export type FeatureFlagsMap = Record<FlagName, FeatureFlag>
+export type FeatureFlagsMap = Record<FeatureFlagName, FeatureFlag>

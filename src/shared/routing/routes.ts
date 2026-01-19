@@ -8,5 +8,7 @@ export const ROUTES = {
     passwordReset: "/auth/password-reset",
   },
 
+  featureFlags: "/feature-flags",
+
   notFound: "/not-found",
 } as const

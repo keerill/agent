@@ -1,0 +1,17 @@
+.wrap :global {
+  .refresh-btn circle {
+    fill: unset;
+  }
+
+  a {
+    color: var(--color-text-primary);
+
+    &:hover {
+      color: var(--color-text-accent-hover);
+    }
+
+    &:active {
+      color: var(--color-text-accent);
+    }
+  }
+}
