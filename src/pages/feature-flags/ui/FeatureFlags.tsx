@@ -3,9 +3,9 @@ import { RefreshCircle } from "fsk-design-system/icons"
 
 import {
   type FeatureFlagName,
-  type FeatureFlagsMap,
   featureFlags,
   initFeatureFlags,
+  localFeatureFlags,
 } from "@/shared/feature-flags"
 import { Button, Flex, Switch } from "@/shared/ui"
 
@@ -19,23 +19,20 @@ export const FeatureFlags = reatomComponent(() => {
   const isAllOn = flagsList.every(([_, { isOn }]) => isOn)
 
   const handleToggle = (key: FeatureFlagName) => () => {
-    featureFlags.set((prev) => ({
+    localFeatureFlags.set((prev) => ({
       ...prev,
-      [key]: {
-        ...prev[key],
-        isOn: !prev[key].isOn,
-      },
+      [key]: !flags[key].isOn,
     }))
   }
 
   const handleToggleAll = () => {
     const isOn = !isAllOn
 
-    const updatedFlags = Object.fromEntries(
-      flagsList.map(([key, value]) => [key, { ...value, isOn }]),
+    localFeatureFlags.set(
+      Object.fromEntries(
+        Object.keys(flags).map((key) => [key, isOn]),
+      ) as Record<FeatureFlagName, boolean>,
     )
-
-    featureFlags.set(updatedFlags as FeatureFlagsMap)
   }
 
   const handleRefresh = () => {
