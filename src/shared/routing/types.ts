@@ -8,33 +8,25 @@ export interface Route extends Omit<RouteObject, "children" | "element"> {
   path: string
   /** Вложенные маршруты */
   children?: Route[]
-  /** Метаданные для меню и SEO */
-  meta?: RouteMeta
-  /** Защитники доступа */
+  /** Заголовок вкладки */
+  documentTitle: string
+  /** Условия доступа */
   guard?: RouteGuard
   /** Layout для страницы */
-  layout?: "default" | "auth" | "guest"
-  /** Динамический путь для меню (если отличается от path) */
-  menuPath?: (user: User | null) => string
+  layout: "default" | "auth"
+  /** Данные для меню */
+  menu?: RouteMenu
 }
 
-interface RouteMeta {
-  /** Отображаемое название в меню */
-  title?: string
-  /** Описание для SEO */
-  description?: string
-  /** Иконка для меню (React компонент) */
-  icon?: React.ReactNode
-  /** Показывать ли в меню */
-  showInMenu?: boolean
-  /** Порядок сортировки в меню */
-  order?: number
+interface RouteMenu {
+  /** Заголовок */
+  label: string
+  /** Иконка */
+  icon: React.ReactNode
+  /** Группа меню */
+  menuGroup: string
   /** Ключ для трекинга */
   trackKey?: string
-  /** Группа меню */
-  menuGroup?: string
-  /** Breadcrumbs название */
-  breadcrumb?: string | ((params: Record<string, string>) => string)
 }
 
 interface RouteGuard {

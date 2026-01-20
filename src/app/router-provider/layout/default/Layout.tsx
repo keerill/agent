@@ -4,7 +4,7 @@ import { Suspense } from "react"
 import { Link, Outlet, useNavigate } from "react-router"
 
 import { fullName, signOut, user } from "@/entities/user"
-import { ROUTES } from "@/shared/routing"
+import { ROUTES, ROUTES_CONFIG } from "@/shared/routing"
 import { Spin } from "@/shared/ui"
 
 import { ThemeToggler } from "../common/ThemeToggler"
@@ -15,7 +15,7 @@ interface Props {
   hideSider?: boolean
 }
 
-export const BaseLayout = reatomComponent((props: Props) => {
+export const DefaultLayout = reatomComponent((props: Props) => {
   const { hideSider } = props
 
   const navigate = useNavigate()
@@ -36,7 +36,13 @@ export const BaseLayout = reatomComponent((props: Props) => {
     extraContent: { afterLogo: <ThemeToggler /> },
   }
 
-  const menuItems: NonNullable<LayoutProps["sider"]>["menu"]["items"] = []
+  const menuItems: NonNullable<LayoutProps["sider"]>["menu"]["items"] =
+    ROUTES_CONFIG.filter((item) => item.menu).map((item) => ({
+      key: item.path,
+      label: item.menu!.label,
+      icon: item.menu!.icon,
+      onClick: () => navigate(item.path),
+    }))
 
   const sider: LayoutProps["sider"] =
     hideSider ? undefined : (
